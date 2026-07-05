@@ -1,0 +1,11 @@
+<svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Phonics to Physics app icon">
+  <rect x="0" y="0" width="160" height="160" rx="38" fill="#1F2D4A"/>
+  <path d="M38,126 C60,122 76,100 86,82 S114,48 126,38"
+        fill="none" stroke="#2E9C8E" stroke-width="8" stroke-linecap="round" stroke-dasharray="0.1 17"/>
+  <circle cx="82" cy="88" r="6" fill="#5FC8BB"/>
+  <circle cx="106" cy="60" r="6" fill="#5FC8BB"/>
+  <circle cx="38" cy="126" r="10" fill="#F08A3E"/>
+  <g transform="translate(126,36)" fill="#F4B740">
+    <path d="M0,-19 L5.8,-5.8 L19,-3.8 L9,5.6 L11,19 L0,12.5 L-11,19 L-9,5.6 L-19,-3.8 L-5.8,-5.8 Z"/>
+  </g>
+</svg>

@@ -1,0 +1,26 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Phonics to Physics social banner">
+  <rect width="1200" height="630" fill="#FBF5EC"/>
+  <!-- faint large journey path in background -->
+  <path d="M120,540 C360,500 520,360 640,270 S980,120 1090,90"
+        fill="none" stroke="#EADFCB" stroke-width="10" stroke-linecap="round" stroke-dasharray="0.1 26"/>
+
+  <!-- icon badge -->
+  <g transform="translate(150,215)">
+    <rect x="0" y="0" width="200" height="200" rx="46" fill="#FFFFFF" stroke="#EADFCB" stroke-width="2"/>
+    <path d="M50,155 C75,150 92,125 105,105 S138,65 152,52"
+          fill="none" stroke="#2E9C8E" stroke-width="7.5" stroke-linecap="round" stroke-dasharray="0.1 19"/>
+    <circle cx="100" cy="112" r="7" fill="#2E9C8E"/>
+    <circle cx="129" cy="79" r="7" fill="#2E9C8E"/>
+    <circle cx="50" cy="155" r="11" fill="#F08A3E"/>
+    <g transform="translate(154,50)" fill="#F4B740">
+      <path d="M0,-21 L6.4,-6.4 L21,-4.2 L10,6.2 L12,21 L0,13.8 L-12,21 L-10,6.2 L-21,-4.2 L-6.4,-6.4 Z"/>
+    </g>
+  </g>
+
+  <!-- text -->
+  <g transform="translate(400,0)">
+    <text x="0" y="290" font-family="Georgia,serif" font-size="92" font-weight="700" fill="#1F2D4A">Phonics <tspan font-size="52" font-style="italic" fill="#F08A3E">to</tspan></text>
+    <text x="0" y="380" font-family="Georgia,serif" font-size="92" font-weight="700" fill="#2E9C8E">Physics</text>
+    <text x="4" y="430" font-family="'Helvetica Neue',Arial,sans-serif" font-size="26" letter-spacing="4" fill="#6B7280">SMALL STEPS, BIG RESULTS</text>
+  </g>
+</svg>

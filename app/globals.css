@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream text-navy font-sans antialiased;
+    line-height: 1.6;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .wrap {
+    @apply mx-auto w-full max-w-wrap px-6;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center rounded-pill px-6 py-3 text-[15px] font-bold transition-colors duration-150;
+  }
+  .btn-primary {
+    @apply bg-coral text-white hover:bg-coral-dark;
+  }
+  .btn-ghost {
+    @apply border-2 border-line bg-transparent text-navy hover:border-coral;
+  }
+  .btn-teal {
+    @apply bg-teal text-white hover:brightness-95;
+  }
+  .card {
+    @apply rounded-[20px] border border-line bg-white p-7 shadow-soft;
+  }
+  .eyebrow {
+    @apply text-[13px] font-bold uppercase tracking-[2px] text-coral;
+  }
+}

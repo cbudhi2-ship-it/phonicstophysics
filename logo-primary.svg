@@ -1,0 +1,26 @@
+<svg width="760" height="240" viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Phonics to Physics — Small steps, big results">
+  <!-- ICON: the journey badge -->
+  <g transform="translate(30,40)">
+    <rect x="0" y="0" width="160" height="160" rx="38" fill="#FFFFFF" stroke="#EADFCB" stroke-width="2"/>
+    <!-- climbing path -->
+    <path d="M40,124 C60,120 74,100 84,84 S110,52 122,42"
+          fill="none" stroke="#2E9C8E" stroke-width="6" stroke-linecap="round" stroke-dasharray="0.1 15"/>
+    <!-- milestone dots -->
+    <circle cx="80" cy="90" r="5.5" fill="#2E9C8E"/>
+    <circle cx="103" cy="63" r="5.5" fill="#2E9C8E"/>
+    <!-- start dot -->
+    <circle cx="40" cy="124" r="9" fill="#F08A3E"/>
+    <!-- destination star -->
+    <g transform="translate(124,40)" fill="#F4B740">
+      <path d="M0,-17 L5.2,-5.2 L17,-3.4 L8,5 L10,17 L0,11.2 L-10,17 L-8,5 L-17,-3.4 L-5.2,-5.2 Z"/>
+    </g>
+  </g>
+
+  <!-- WORDMARK -->
+  <g transform="translate(222,0)">
+    <text x="0" y="112" font-family="Georgia,'Times New Roman',serif" font-size="60" font-weight="700" fill="#1F2D4A">Phonics</text>
+    <text x="238" y="112" font-family="Georgia,serif" font-size="34" font-style="italic" fill="#F08A3E">to</text>
+    <text x="0" y="172" font-family="Georgia,'Times New Roman',serif" font-size="60" font-weight="700" fill="#2E9C8E">Physics</text>
+    <text x="4" y="206" font-family="'Helvetica Neue',Arial,sans-serif" font-size="17" letter-spacing="3" fill="#6B7280">SMALL STEPS, BIG RESULTS</text>
+  </g>
+</svg>
