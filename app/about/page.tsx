@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -8,10 +9,11 @@ export const metadata: Metadata = {
 };
 
 const creds = [
-  "📖 Reading & Phonics",
+  "🎓 Qualified teacher · 10 years",
+  "📖 Reading & English",
   "➗ Maths (Y1 – A-level)",
   "🔬 GCSE Science",
-  "✅ DBS Checked",
+  "✅ DBS checked",
   "💻 Online or in person",
 ];
 
@@ -20,25 +22,31 @@ export default function AboutPage() {
     <section className="py-14">
       <div className="wrap">
         <div className="grid items-center gap-11 md:grid-cols-[.8fr_1.2fr]">
-          <div
-            className="flex aspect-square items-center justify-center rounded-[20px] border border-line font-bold text-navy-soft shadow-soft"
-            style={{ background: "linear-gradient(135deg,#FFE9CF,#D5F0EA)" }}
-          >
-            Your photo here
+          <div className="relative aspect-square overflow-hidden rounded-[20px] border border-line shadow-soft">
+            <Image
+              src="/chris.jpg"
+              alt="Chris, founder and tutor at Phonics to Physics"
+              fill
+              sizes="(max-width: 768px) 100vw, 40vw"
+              className="object-cover object-[50%_25%]"
+              priority
+            />
           </div>
           <div>
             <span className="eyebrow">About me</span>
             <h1 className="mb-3.5 mt-1 text-[34px]">Hi, I&apos;m Chris 👋</h1>
             <p className="mb-3.5 text-[16px] text-navy-soft">
-              I&apos;ve spent the last several years tutoring students of every
-              age and stage — from helping five-year-olds sound out their first
-              words, to guiding A-level students through calculus and mechanics.
-              I believe every child can thrive with the right support, patience
-              and a bit of fun.
+              I&apos;m a qualified teacher with 10 years&apos; experience across
+              Cambridge primary schools, where I taught a broad range of subjects
+              and got to know how children really learn. For the last 4 years
+              I&apos;ve also tutored one-to-one — working with students on reading
+              and English skills, secondary maths, GCSE sciences, and applied
+              maths at A-level.
             </p>
             <p className="mb-3.5 text-[16px] text-navy-soft">
-              My approach is warm, structured and tailored to each learner. We
-              start by finding where the gaps are, set clear goals, and
+              I believe every child can thrive with the right support, patience
+              and a bit of fun. My approach is warm, structured and tailored to
+              each learner: we find where the gaps are, set clear goals, and
               celebrate the wins along the way. Parents get honest updates so you
               always know how things are going.
             </p>

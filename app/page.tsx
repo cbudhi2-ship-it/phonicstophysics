@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { JourneyMark } from "@/components/Logo";
 import { subjects, trustBadges } from "@/lib/site";
@@ -44,8 +45,8 @@ export default function HomePage() {
             </div>
             <div className="mt-1.5 flex justify-around">
               {[
-                ["7+", "years tutoring"],
-                ["Y1–A-lvl", "all ages"],
+                ["10 yrs", "in the classroom"],
+                ["4 yrs", "tutoring 1-to-1"],
                 ["DBS", "checked"],
               ].map(([big, small]) => (
                 <div key={small}>
@@ -99,23 +100,25 @@ export default function HomePage() {
       {/* ABOUT TEASER */}
       <section className="border-y border-line bg-white py-16">
         <div className="wrap grid items-center gap-11 md:grid-cols-[.8fr_1.2fr]">
-          <div
-            className="flex aspect-square items-center justify-center rounded-[20px] border border-line font-bold text-navy-soft shadow-soft"
-            style={{
-              background: "linear-gradient(135deg,#FFE9CF,#D5F0EA)",
-            }}
-          >
-            Your photo here
+          <div className="relative aspect-square overflow-hidden rounded-[20px] border border-line shadow-soft">
+            <Image
+              src="/chris.jpg"
+              alt="Chris, founder and tutor at Phonics to Physics"
+              fill
+              sizes="(max-width: 768px) 100vw, 40vw"
+              className="object-cover object-[50%_25%]"
+              priority
+            />
           </div>
           <div>
             <span className="eyebrow">About me</span>
             <h2 className="mb-3.5 mt-1 text-[34px]">Hi, I&apos;m Chris 👋</h2>
             <p className="mb-3.5 text-[16px] text-navy-soft">
-              I&apos;ve spent the last several years tutoring students of every
-              age and stage — from helping five-year-olds sound out their first
-              words, to guiding A-level students through calculus and mechanics.
-              I believe every child can thrive with the right support, patience
-              and a bit of fun.
+              I&apos;m a qualified teacher with 10 years&apos; experience in
+              Cambridge primary schools, and I&apos;ve spent the last 4 years
+              tutoring one-to-one — from early reading and English to secondary
+              maths, GCSE sciences and A-level applied maths. I believe every
+              child can thrive with the right support, patience and a bit of fun.
             </p>
             <Link href="/about" className="btn btn-teal mt-2">
               Read more about me
