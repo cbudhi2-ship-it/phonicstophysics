@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 import { enquirySchema } from "@/lib/enquiry";
 import { site } from "@/lib/site";
+
+// nodemailer needs the Node.js runtime (not Edge).
+export const runtime = "nodejs";
 
 // Very small in-memory rate limiter (per warm serverless instance).
 // Good enough to blunt casual spam; a durable store (Upstash/Redis) can
@@ -69,25 +73,34 @@ export async function POST(request: Request) {
 
   // TODO(Phase 2): persist the enquiry to the database with status "new".
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const notify = process.env.CONTACT_NOTIFY_EMAIL ?? site.email;
+  // SMTP config (Namecheap Private Email). Sending "from" must be the
+  // authenticated mailbox — the provider won't relay arbitrary addresses.
+  const host = process.env.SMTP_HOST;
+  const port = Number(process.env.SMTP_PORT ?? 465);
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  const notify = process.env.CONTACT_NOTIFY_EMAIL ?? user ?? site.email;
   const from =
     process.env.CONTACT_FROM_EMAIL ??
-    `Phonics to Physics <onboarding@resend.dev>`;
+    (user ? `Phonics to Physics <${user}>` : undefined);
 
   // If email isn't configured yet, don't fail the enquiry — log and succeed
-  // so the marketing site works before Resend is wired up.
-  if (!apiKey) {
+  // so the marketing site works before SMTP credentials are set.
+  if (!host || !user || !pass || !from) {
     console.warn(
-      "[enquiry] RESEND_API_KEY not set — enquiry received but no email sent.",
+      "[enquiry] SMTP not configured — enquiry received but no email sent.",
       { parentName: data.parentName, email: data.email },
     );
     return NextResponse.json({ ok: true, emailed: false });
   }
 
   try {
-    const { Resend } = await import("resend");
-    const resend = new Resend(apiKey);
+    const transporter = nodemailer.createTransport({
+      host,
+      port,
+      secure: port === 465, // 465 = implicit TLS; 587 = STARTTLS
+      auth: { user, pass },
+    });
 
     const summary = `
       <h2>New enquiry</h2>
@@ -100,17 +113,17 @@ export async function POST(request: Request) {
       <p><strong>Message:</strong><br>${escapeHtml(data.message).replace(/\n/g, "<br>")}</p>
     `;
 
-    // Notify Chris
-    await resend.emails.send({
+    // Notify Chris — reply-to set to the enquirer so a reply goes straight back.
+    await transporter.sendMail({
       from,
       to: notify,
-      replyTo: data.email,
+      replyTo: `${data.parentName} <${data.email}>`,
       subject: `New enquiry — ${data.parentName} (${data.yearGroup})`,
       html: summary,
     });
 
     // Auto-reply to the enquirer
-    await resend.emails.send({
+    await transporter.sendMail({
       from,
       to: data.email,
       subject: "Thanks for your enquiry — Phonics to Physics",
