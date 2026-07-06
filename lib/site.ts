@@ -28,7 +28,7 @@ export const subjects = [
     iconBg: "#FCEFC7",
     title: "Maths, Y1 to A-level",
     blurb:
-      "From times tables and SATs to GCSE and A-level — arithmetic, algebra, calculus and exam technique.",
+      "From times tables and SATs to GCSE and A-level — arithmetic, algebra and exam technique.",
   },
   {
     icon: "🔬",
