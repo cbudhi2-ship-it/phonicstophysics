@@ -203,6 +203,10 @@ export function ContactForm() {
             </label>
           ))}
         </div>
+        <p className="mt-2 text-[12px] text-muted">
+          In-person lessons are available for students in and around Cambridge —
+          everywhere else is online.
+        </p>
       </div>
 
       <div>

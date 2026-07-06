@@ -14,7 +14,7 @@ const creds = [
   "➗ Maths (Y1 – A-level)",
   "🔬 GCSE Science",
   "✅ DBS checked",
-  "💻 Online or in person",
+  "💻 Online, or in-person in Cambridge",
 ];
 
 export default function AboutPage() {

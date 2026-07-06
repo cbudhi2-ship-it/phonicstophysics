@@ -17,9 +17,10 @@ export const yearGroups = [
 ] as const;
 
 export const subjectOptions = [
-  "Reading & Phonics",
+  "Reading & English",
   "Maths",
   "GCSE Science",
+  "RE & Ethics",
   "Other",
 ] as const;
 

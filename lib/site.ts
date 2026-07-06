@@ -5,7 +5,7 @@ export const site = {
     "Friendly 1-to-1 tutoring from Year 1 phonics all the way to A-level Maths and Science. Building confidence one lesson at a time.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://phonicstophysics.com",
   email: "hello@phonicstophysics.com",
-  phone: "07xxx xxx xxx",
+  phone: "07584 030444",
 } as const;
 
 export const nav = [
@@ -41,7 +41,7 @@ export const subjects = [
 
 export const trustBadges = [
   "DBS checked",
-  "Online or in person",
+  "Online or in-person (Cambridge)",
   "Y1–A-level",
   "Free intro call",
 ] as const;

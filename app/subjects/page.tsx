@@ -34,8 +34,8 @@ export default function SubjectsPage() {
           <span className="eyebrow">What I teach</span>
           <h1 className="mt-1.5 text-[36px]">Support at every stage</h1>
           <p className="mx-auto mt-3 max-w-[560px] text-[16px] text-navy-soft">
-            One-to-one lessons tailored to your child — in person or online, at a
-            pace that suits them.
+            One-to-one lessons tailored to your child — online, or in person for
+            students in and around Cambridge, at a pace that suits them.
           </p>
         </div>
 

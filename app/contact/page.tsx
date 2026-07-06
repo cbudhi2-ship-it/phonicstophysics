@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ContactForm } from "./ContactForm";
-import { trustBadges } from "@/lib/site";
+import { site, trustBadges } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -32,6 +32,17 @@ export default function ContactPage() {
               </li>
             ))}
           </ul>
+
+          <p className="mt-6 text-[15px] text-navy-soft">
+            Prefer to call or text? Reach me on{" "}
+            <a
+              href={`tel:+44${site.phone.replace(/\D/g, "").slice(1)}`}
+              className="font-semibold text-teal"
+            >
+              {site.phone}
+            </a>
+            .
+          </p>
         </div>
 
         <ContactForm />
