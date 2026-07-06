@@ -12,7 +12,39 @@ export const nav = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/subjects", label: "Subjects" },
+  { href: "/pricing", label: "Pricing" },
   { href: "/contact", label: "Contact" },
+] as const;
+
+/**
+ * Public-facing pricing — one token = one 55-min lesson, priced by tier.
+ * Packs of 10 are 10% off. Kept in sync with BUILD_BRIEF §6.2 / reference copy.
+ */
+export const pricing = [
+  {
+    tier: "Primary",
+    years: "Reception – Year 6",
+    single: 30,
+    pack: 270,
+    save: 30,
+    iconBg: "#FFE9CF",
+  },
+  {
+    tier: "Secondary",
+    years: "Year 7 – 11 (incl. GCSE)",
+    single: 35,
+    pack: 315,
+    save: 35,
+    iconBg: "#FCEFC7",
+  },
+  {
+    tier: "A-level",
+    years: "Year 12 – 13",
+    single: 40,
+    pack: 360,
+    save: 40,
+    iconBg: "#D5F0EA",
+  },
 ] as const;
 
 export const subjects = [
