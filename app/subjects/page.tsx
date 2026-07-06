@@ -5,13 +5,13 @@ import { subjects } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Subjects",
   description:
-    "Learning to Read (phonics & early reading), Maths from Year 1 to A-level, and GCSE Science — Biology, Chemistry and Physics.",
+    "Reading & English (phonics to comprehension and writing), Maths from Year 1 to A-level, and GCSE Science — Biology, Chemistry and Physics.",
 };
 
 const detail: Record<string, string[]> = {
-  "Learning to Read": [
-    "Systematic phonics & blending",
-    "Early reading fluency & comprehension",
+  "Reading & English": [
+    "Phonics, blending & early reading fluency",
+    "Comprehension, grammar & writing skills",
     "A love of books and reading for pleasure",
   ],
   "Maths, Y1 to A-level": [

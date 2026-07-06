@@ -19,9 +19,9 @@ export const subjects = [
   {
     icon: "📖",
     iconBg: "#FFE9CF",
-    title: "Learning to Read",
+    title: "Reading & English",
     blurb:
-      "Phonics, early reading and comprehension for Year 1 upward — building strong foundations and a love of books.",
+      "From phonics and early reading to comprehension, grammar and writing — building strong foundations, confidence and a love of books.",
   },
   {
     icon: "➗",
