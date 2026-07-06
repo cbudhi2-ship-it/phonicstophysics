@@ -94,6 +94,11 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+          <p className="mx-auto mt-8 max-w-[620px] text-center text-[15px] text-navy-soft">
+            Plus support across the wider curriculum — including{" "}
+            <span className="font-semibold">GCSE Religious Studies (RE) &amp;
+            Ethics</span>. If it&apos;s on your child&apos;s timetable, just ask.
+          </p>
         </div>
       </section>
 

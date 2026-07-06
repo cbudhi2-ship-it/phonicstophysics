@@ -62,6 +62,12 @@ export default function SubjectsPage() {
           ))}
         </div>
 
+        <p className="mx-auto mt-8 max-w-[620px] text-center text-[15px] text-navy-soft">
+          Plus support across the wider curriculum — including{" "}
+          <span className="font-semibold">GCSE Religious Studies (RE) &amp;
+          Ethics</span>. If it&apos;s on your child&apos;s timetable, just ask.
+        </p>
+
         <div className="mt-14 text-center">
           <p className="mb-5 text-[16px] text-navy-soft">
             Not sure which is the right fit? Let&apos;s have a chat.
