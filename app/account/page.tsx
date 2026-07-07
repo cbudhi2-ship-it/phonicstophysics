@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { tierLabel, type Tier } from "@/lib/tiers";
 import { deleteChild } from "@/lib/children-actions";
-import { ChangePasswordForm } from "./ChangePasswordForm";
+import { ChangePasswordForm } from "@/components/ChangePasswordForm";
 import { AddChildForm } from "./AddChildForm";
 
 export const dynamic = "force-dynamic";

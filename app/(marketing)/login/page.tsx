@@ -26,7 +26,13 @@ export default async function LoginPage() {
 
           <LoginForm />
 
-          <p className="mt-5 text-center text-[13px] text-muted">
+          <p className="mt-4 text-center text-[13px]">
+            <Link href="/forgot-password" className="font-semibold text-teal">
+              Forgot your password?
+            </Link>
+          </p>
+
+          <p className="mt-3 text-center text-[13px] text-muted">
             Not a client yet?{" "}
             <Link href="/contact" className="font-semibold text-teal">
               Book a free intro call

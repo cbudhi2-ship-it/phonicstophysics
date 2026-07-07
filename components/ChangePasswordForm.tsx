@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { changePassword, type ChangePasswordState } from "@/lib/actions";
 
@@ -9,13 +10,26 @@ const fieldClass =
   "w-full rounded-xl border border-line bg-white px-3.5 py-3 text-[15px] outline-none focus:border-teal";
 const labelClass = "mb-1.5 block text-[13px] font-bold";
 
-export function ChangePasswordForm() {
+export function ChangePasswordForm({
+  submitLabel = "Update password",
+  continueHref,
+}: {
+  submitLabel?: string;
+  continueHref?: string;
+}) {
   const [state, formAction, pending] = useActionState(changePassword, initial);
 
   if (state.ok) {
     return (
-      <div className="rounded-xl border border-teal/40 bg-[#EAF7F4] px-4 py-3 text-[14px] font-semibold text-teal">
-        ✓ Your password has been updated.
+      <div className="space-y-4">
+        <div className="rounded-xl border border-teal/40 bg-[#EAF7F4] px-4 py-3 text-[14px] font-semibold text-teal">
+          ✓ Your password has been updated.
+        </div>
+        {continueHref && (
+          <Link href={continueHref} className="btn btn-primary w-full">
+            Continue
+          </Link>
+        )}
       </div>
     );
   }
@@ -64,7 +78,7 @@ export function ChangePasswordForm() {
         disabled={pending}
         className="btn btn-primary disabled:opacity-60"
       >
-        {pending ? "Updating…" : "Update password"}
+        {pending ? "Saving…" : submitLabel}
       </button>
     </form>
   );
