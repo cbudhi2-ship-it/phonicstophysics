@@ -30,10 +30,10 @@ export function PortalHeader({
             </span>
           )}
           <Link
-            href="/account/password"
+            href="/account"
             className="hidden text-[14px] font-semibold text-teal hover:underline sm:inline"
           >
-            Account
+            Settings
           </Link>
           <form action={logout}>
             <button type="submit" className="btn btn-ghost !py-2 text-[14px]">

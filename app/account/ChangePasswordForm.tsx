@@ -62,7 +62,7 @@ export function ChangePasswordForm() {
       <button
         type="submit"
         disabled={pending}
-        className="btn btn-primary w-full disabled:opacity-60"
+        className="btn btn-primary disabled:opacity-60"
       >
         {pending ? "Updating…" : "Update password"}
       </button>
