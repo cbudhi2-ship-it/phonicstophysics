@@ -17,21 +17,28 @@ export function AddClientForm() {
   const [state, formAction, pending] = useActionState(createClientUser, initial);
 
   // Show the success panel after a create.
-  if (state.ok && state.tempPassword) {
+  if (state.ok) {
     return (
       <div className="rounded-[16px] border border-teal/40 bg-[#EAF7F4] p-5">
         <h2 className="text-[18px]">✓ {state.name}&apos;s account created</h2>
-        <p className="mt-1 text-[14px] text-navy-soft">
-          {state.emailed
-            ? "A welcome email with their login details has been sent."
-            : "Email isn't configured here, so share these details with them directly:"}
-        </p>
-        <div className="mt-3 rounded-xl border border-line bg-white px-4 py-3 font-mono text-[14px]">
-          Temporary password: <strong>{state.tempPassword}</strong>
-        </div>
-        <p className="mt-2 text-[12px] text-muted">
-          They can change it from their account after logging in.
-        </p>
+        {state.emailed ? (
+          <p className="mt-1 text-[14px] text-navy-soft">
+            A welcome email has been sent inviting them to set their own
+            password.
+          </p>
+        ) : (
+          <>
+            <p className="mt-1 text-[14px] text-navy-soft">
+              Email isn&apos;t configured here — share this &ldquo;set your
+              password&rdquo; link with them directly:
+            </p>
+            {state.setupLink && (
+              <div className="mt-3 break-all rounded-xl border border-line bg-white px-4 py-3 font-mono text-[12px]">
+                {state.setupLink}
+              </div>
+            )}
+          </>
+        )}
         <button
           type="button"
           onClick={() => window.location.reload()}

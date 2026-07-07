@@ -3,6 +3,7 @@ import { requireAdmin } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { AddClientForm } from "./AddClientForm";
 import { StatusControl } from "./StatusControl";
+import { ClientActions } from "./ClientActions";
 
 export const dynamic = "force-dynamic";
 
@@ -84,12 +85,13 @@ export default async function AdminClientsPage() {
               <th className="px-4 py-3 font-bold">Status</th>
               <th className="px-4 py-3 font-bold">Last sign-in</th>
               <th className="px-4 py-3 font-bold">Added</th>
+              <th className="px-4 py-3 font-bold">Actions</th>
             </tr>
           </thead>
           <tbody>
             {clients.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-10 text-center text-muted">
+                <td colSpan={7} className="px-4 py-10 text-center text-muted">
                   No clients yet — add your first one above.
                 </td>
               </tr>
@@ -108,6 +110,9 @@ export default async function AdminClientsPage() {
                   {fmtDate(c.lastSignIn)}
                 </td>
                 <td className="px-4 py-3 text-muted">{fmtDate(c.created_at)}</td>
+                <td className="px-4 py-3">
+                  <ClientActions id={c.id} />
+                </td>
               </tr>
             ))}
           </tbody>
