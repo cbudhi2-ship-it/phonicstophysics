@@ -41,3 +41,34 @@ export async function logout() {
   await supabase.auth.signOut();
   redirect("/login");
 }
+
+export type ChangePasswordState = { error: string | null; ok?: boolean };
+
+export async function changePassword(
+  _prev: ChangePasswordState,
+  formData: FormData,
+): Promise<ChangePasswordState> {
+  const password = String(formData.get("password") ?? "");
+  const confirm = String(formData.get("confirm") ?? "");
+
+  if (password.length < 8) {
+    return { error: "Use at least 8 characters." };
+  }
+  if (password !== confirm) {
+    return { error: "Those passwords don't match." };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { error: "You're not signed in." };
+  }
+
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) {
+    return { error: "Sorry — couldn't update your password." };
+  }
+  return { error: null, ok: true };
+}

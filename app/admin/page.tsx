@@ -1,9 +1,11 @@
+import Link from "next/link";
+
 const sections = [
   {
     icon: "👥",
     title: "Clients & children",
-    desc: "Enable accounts after an intro call, manage children and their tiers.",
-    soon: true,
+    desc: "Add parent accounts, see your customer list, and enable or pause access.",
+    href: "/admin/clients",
   },
   {
     icon: "✉️",
@@ -46,22 +48,37 @@ export default function AdminHome() {
       </p>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {sections.map((s) => (
-          <div key={s.title} className="card">
-            <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-[14px] bg-cream text-xl">
-              {s.icon}
+        {sections.map((s) => {
+          const inner = (
+            <>
+              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-[14px] bg-cream text-xl">
+                {s.icon}
+              </div>
+              <div className="mb-1 flex items-center gap-2">
+                <h2 className="text-[18px]">{s.title}</h2>
+                {s.soon && (
+                  <span className="rounded-pill bg-line/60 px-2 py-0.5 text-[11px] font-bold text-muted">
+                    Soon
+                  </span>
+                )}
+              </div>
+              <p className="text-[14px] text-muted">{s.desc}</p>
+            </>
+          );
+          return s.href ? (
+            <Link
+              key={s.title}
+              href={s.href}
+              className="card block transition-shadow hover:shadow-[0_14px_34px_rgba(31,45,74,.12)]"
+            >
+              {inner}
+            </Link>
+          ) : (
+            <div key={s.title} className="card">
+              {inner}
             </div>
-            <div className="mb-1 flex items-center gap-2">
-              <h2 className="text-[18px]">{s.title}</h2>
-              {s.soon && (
-                <span className="rounded-pill bg-line/60 px-2 py-0.5 text-[11px] font-bold text-muted">
-                  Soon
-                </span>
-              )}
-            </div>
-            <p className="text-[14px] text-muted">{s.desc}</p>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </>
   );
