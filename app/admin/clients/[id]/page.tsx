@@ -95,6 +95,16 @@ export default async function AdminClientDetail({
     created_at: string;
   }[];
 
+  // Opening the thread marks the parent's messages as read.
+  if (thread.some((m) => m.sender === "client")) {
+    await admin
+      .from("messages")
+      .update({ read: true })
+      .eq("parent_id", id)
+      .eq("sender", "client")
+      .eq("read", false);
+  }
+
   const name = profile?.full_name ?? "Client";
   const email = userRes?.user?.email ?? "";
 

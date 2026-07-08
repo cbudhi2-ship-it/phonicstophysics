@@ -1,11 +1,25 @@
 import Link from "next/link";
 
-const sections = [
+type Section = {
+  icon: string;
+  title: string;
+  desc: string;
+  href?: string;
+  external?: boolean;
+};
+
+const sections: Section[] = [
   {
     icon: "👥",
     title: "Clients & children",
-    desc: "Add parent accounts, see your customer list, and enable or pause access.",
+    desc: "Add clients, manage children, set targets & homework, and adjust lesson balances. Open a client to manage them.",
     href: "/admin/clients",
+  },
+  {
+    icon: "💬",
+    title: "Messages",
+    desc: "Parent message threads in one inbox — newest first, with unread flags.",
+    href: "/admin/messages",
   },
   {
     icon: "✉️",
@@ -14,28 +28,11 @@ const sections = [
     href: "/admin/enquiries",
   },
   {
-    icon: "🎟️",
-    title: "Lessons & tokens",
-    desc: "See each client's balance and transaction history; make adjustments.",
-    soon: true,
-  },
-  {
-    icon: "🎯",
-    title: "Targets & homework",
-    desc: "Set learning goals and assign homework — open a client to manage.",
-    href: "/admin/clients",
-  },
-  {
-    icon: "💬",
-    title: "Messages",
-    desc: "Reply to parent messages — open a client to see their thread.",
-    href: "/admin/clients",
-  },
-  {
     icon: "📅",
     title: "Availability",
-    desc: "Manage your bookable hours (opens Cal.com).",
-    soon: true,
+    desc: "Set your bookable hours (opens Cal.com).",
+    href: "https://app.cal.com/availability",
+    external: true,
   },
 ];
 
@@ -54,29 +51,29 @@ export default function AdminHome() {
               <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-[14px] bg-cream text-xl">
                 {s.icon}
               </div>
-              <div className="mb-1 flex items-center gap-2">
-                <h2 className="text-[18px]">{s.title}</h2>
-                {s.soon && (
-                  <span className="rounded-pill bg-line/60 px-2 py-0.5 text-[11px] font-bold text-muted">
-                    Soon
-                  </span>
-                )}
-              </div>
+              <h2 className="mb-1 text-[18px]">{s.title}</h2>
               <p className="text-[14px] text-muted">{s.desc}</p>
             </>
           );
-          return s.href ? (
-            <Link
-              key={s.title}
-              href={s.href}
-              className="card block transition-shadow hover:shadow-[0_14px_34px_rgba(31,45,74,.12)]"
-            >
+          const cls =
+            "card block transition-shadow hover:shadow-[0_14px_34px_rgba(31,45,74,.12)]";
+          if (s.external) {
+            return (
+              <a
+                key={s.title}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cls}
+              >
+                {inner}
+              </a>
+            );
+          }
+          return (
+            <Link key={s.title} href={s.href!} className={cls}>
               {inner}
             </Link>
-          ) : (
-            <div key={s.title} className="card">
-              {inner}
-            </div>
           );
         })}
       </div>
