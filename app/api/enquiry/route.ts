@@ -71,6 +71,40 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
+  // Verify hCaptcha, if configured. Skipped gracefully until the secret is set.
+  const hcaptchaSecret = process.env.HCAPTCHA_SECRET;
+  if (hcaptchaSecret) {
+    const token =
+      body && typeof body === "object" && "captchaToken" in body
+        ? String((body as { captchaToken?: unknown }).captchaToken ?? "")
+        : "";
+    if (!token) {
+      return NextResponse.json(
+        { ok: false, error: "Please complete the anti-spam check." },
+        { status: 422 },
+      );
+    }
+    try {
+      const verify = await fetch("https://api.hcaptcha.com/siteverify", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ secret: hcaptchaSecret, response: token }),
+      });
+      const result = (await verify.json()) as { success?: boolean };
+      if (!result.success) {
+        return NextResponse.json(
+          { ok: false, error: "Anti-spam check failed — please try again." },
+          { status: 422 },
+        );
+      }
+    } catch {
+      return NextResponse.json(
+        { ok: false, error: "Couldn't verify the anti-spam check." },
+        { status: 502 },
+      );
+    }
+  }
+
   // TODO(Phase 2): persist the enquiry to the database with status "new".
 
   // SMTP config (Namecheap Private Email). Sending "from" must be the

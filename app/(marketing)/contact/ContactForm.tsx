@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 import {
   enquirySchema,
   modeOptions,
@@ -15,10 +16,14 @@ const fieldClass =
   "w-full rounded-xl border border-line bg-white px-3.5 py-3 text-[15px] outline-none focus:border-teal";
 const labelClass = "mb-1.5 block text-[13px] font-bold";
 
+const HCAPTCHA_SITEKEY = process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY;
+
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
   const [subjects, setSubjects] = useState<string[]>([]);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const captchaRef = useRef<HCaptcha>(null);
 
   function toggleSubject(s: string) {
     setSubjects((prev) =>
@@ -53,12 +58,17 @@ export function ContactForm() {
       return;
     }
 
+    if (HCAPTCHA_SITEKEY && !captchaToken) {
+      setError("Please tick the box to confirm you're human.");
+      return;
+    }
+
     setStatus("submitting");
     try {
       const res = await fetch("/api/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
+        body: JSON.stringify({ ...parsed.data, captchaToken }),
       });
       const json = await res.json();
       if (!res.ok || !json.ok) {
@@ -67,9 +77,13 @@ export function ContactForm() {
       setStatus("success");
       form.reset();
       setSubjects([]);
+      setCaptchaToken(null);
+      captchaRef.current?.resetCaptcha();
     } catch (err) {
       setStatus("error");
       setError(err instanceof Error ? err.message : "Something went wrong.");
+      setCaptchaToken(null);
+      captchaRef.current?.resetCaptcha();
     }
   }
 
@@ -222,6 +236,15 @@ export function ContactForm() {
           placeholder="Tell me a little about your child and what you're looking for."
         />
       </div>
+
+      {HCAPTCHA_SITEKEY && (
+        <HCaptcha
+          ref={captchaRef}
+          sitekey={HCAPTCHA_SITEKEY}
+          onVerify={(token) => setCaptchaToken(token)}
+          onExpire={() => setCaptchaToken(null)}
+        />
+      )}
 
       {error && (
         <p
