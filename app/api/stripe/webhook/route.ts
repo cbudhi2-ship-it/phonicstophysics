@@ -72,32 +72,53 @@ export async function POST(request: Request) {
           early_bird: md.early_bird === "true",
           stripe_session_id: session.id,
         });
-      if (enrErr && !enrErr.message.includes("duplicate")) {
-        console.error("[stripe webhook] bootcamp enrol failed:", enrErr.message);
+      console.log(
+        `[bootcamp] enrol email="${email}" name="${name ?? ""}" enrolErr=${enrErr?.message ?? "none"}`,
+      );
+
+      // Confirm to the buyer + notify Chris. Log outcomes (don't swallow).
+      const { sendMail } = await import("@/lib/email");
+      const notify =
+        process.env.CONTACT_NOTIFY_EMAIL ?? "hello@phonicstophysics.com";
+
+      if (email) {
+        try {
+          const sent = await sendMail({
+            to: email,
+            subject: "You're booked — Complete 11+ Summer Bootcamp",
+            html: `<p>Thank you — your place on the Complete 11+ Summer Bootcamp is booked! 🎉</p>
+              <p><strong>When:</strong> Mon–Fri, 3–28 August 2026, 9:30–10:30am, live online.</p>
+              <p>I'll email your joining link and the first workbook before we start.
+              Every session is recorded in case you miss one.</p>
+              <p>Warm wishes,<br>Chris<br><em>Small steps, big results.</em></p>`,
+          });
+          console.log(`[bootcamp] buyer email → ${email}: ${sent ? "sent" : "SMTP not configured"}`);
+        } catch (e) {
+          console.error(
+            "[bootcamp] buyer email failed:",
+            e instanceof Error ? e.message : e,
+          );
+        }
+      } else {
+        console.warn("[bootcamp] no buyer email on the session");
       }
 
-      // Confirm to the buyer + notify Chris (best-effort).
-      const { sendMail } = await import("@/lib/email");
-      const notify = process.env.CONTACT_NOTIFY_EMAIL ?? "hello@phonicstophysics.com";
-      if (email) {
-        await sendMail({
-          to: email,
-          subject: "You're booked — Complete 11+ Summer Bootcamp",
-          html: `<p>Thank you — your place on the Complete 11+ Summer Bootcamp is booked! 🎉</p>
-            <p><strong>When:</strong> Mon–Fri, 3–28 August 2026, 9:30–10:30am, live online.</p>
-            <p>I'll email your joining link and the first workbook before we start.
-            Every session is recorded in case you miss one.</p>
-            <p>Warm wishes,<br>Chris<br><em>Small steps, big results.</em></p>`,
-        }).catch(() => {});
+      try {
+        const sent = await sendMail({
+          to: notify,
+          subject: `New bootcamp booking — ${name ?? email}`,
+          html: `<p>New 11+ Bootcamp booking:</p>
+            <p><strong>${name ?? "—"}</strong> · ${email}<br>
+            Paid £${((session.amount_total ?? 0) / 100).toFixed(2)}
+            ${md.early_bird === "true" ? "(early bird)" : ""}</p>`,
+        });
+        console.log(`[bootcamp] notify email → ${notify}: ${sent ? "sent" : "SMTP not configured"}`);
+      } catch (e) {
+        console.error(
+          "[bootcamp] notify email failed:",
+          e instanceof Error ? e.message : e,
+        );
       }
-      await sendMail({
-        to: notify,
-        subject: `New bootcamp booking — ${name ?? email}`,
-        html: `<p>New 11+ Bootcamp booking:</p>
-          <p><strong>${name ?? "—"}</strong> · ${email}<br>
-          Paid £${((session.amount_total ?? 0) / 100).toFixed(2)}
-          ${md.early_bird === "true" ? "(early bird)" : ""}</p>`,
-      }).catch(() => {});
     }
   }
 
