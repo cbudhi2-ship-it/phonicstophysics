@@ -51,6 +51,54 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "credit failed" }, { status: 500 });
       }
     }
+
+    // Bootcamp course booking (public, no portal account needed).
+    if (md.type === "bootcamp") {
+      const admin = createAdminClient();
+      const email = session.customer_details?.email ?? "";
+      const name =
+        session.customer_details?.name ??
+        // Falls back to the "Child's name" custom field if the buyer's name is blank.
+        session.custom_fields?.find((f) => f.key === "child_name")?.text
+          ?.value ??
+        null;
+
+      const { error: enrErr } = await admin
+        .from("bootcamp_enrolments")
+        .insert({
+          name,
+          email,
+          amount_gbp: (session.amount_total ?? 0) / 100,
+          early_bird: md.early_bird === "true",
+          stripe_session_id: session.id,
+        });
+      if (enrErr && !enrErr.message.includes("duplicate")) {
+        console.error("[stripe webhook] bootcamp enrol failed:", enrErr.message);
+      }
+
+      // Confirm to the buyer + notify Chris (best-effort).
+      const { sendMail } = await import("@/lib/email");
+      const notify = process.env.CONTACT_NOTIFY_EMAIL ?? "hello@phonicstophysics.com";
+      if (email) {
+        await sendMail({
+          to: email,
+          subject: "You're booked — Complete 11+ Summer Bootcamp",
+          html: `<p>Thank you — your place on the Complete 11+ Summer Bootcamp is booked! 🎉</p>
+            <p><strong>When:</strong> Mon–Fri, 3–28 August 2026, 9:30–10:30am, live online.</p>
+            <p>I'll email your joining link and the first workbook before we start.
+            Every session is recorded in case you miss one.</p>
+            <p>Warm wishes,<br>Chris<br><em>Small steps, big results.</em></p>`,
+        }).catch(() => {});
+      }
+      await sendMail({
+        to: notify,
+        subject: `New bootcamp booking — ${name ?? email}`,
+        html: `<p>New 11+ Bootcamp booking:</p>
+          <p><strong>${name ?? "—"}</strong> · ${email}<br>
+          Paid £${((session.amount_total ?? 0) / 100).toFixed(2)}
+          ${md.early_bird === "true" ? "(early bird)" : ""}</p>`,
+      }).catch(() => {});
+    }
   }
 
   // A refund removes the lesson credits that payment bought, so money and

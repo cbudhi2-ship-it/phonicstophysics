@@ -28,6 +28,12 @@ const sections: Section[] = [
     href: "/admin/messages",
   },
   {
+    icon: "🎒",
+    title: "11+ Bootcamp",
+    desc: "Course bookings and total taken for the summer bootcamp.",
+    href: "/admin/bootcamp",
+  },
+  {
     icon: "✉️",
     title: "Enquiries",
     desc: "New enquiries from the contact form, with status tracking.",

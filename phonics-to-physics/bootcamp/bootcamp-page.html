@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complete 11+ Summer Bootcamp — Phonics to Physics</title>
+<style>
+  :root{--navy:#1F2D4A;--coral:#F08A3E;--coral-d:#E0762A;--teal:#2E9C8E;--gold:#F4B740;--cream:#FBF5EC;--card:#fff;--line:#EADFCB;--muted:#6B7280;--shadow:0 10px 30px rgba(31,45,74,.08)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Helvetica Neue',Arial,sans-serif;color:var(--navy);background:var(--cream);line-height:1.6}
+  h1,h2,h3,.serif{font-family:Georgia,'Times New Roman',serif}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+  .btn{display:inline-block;padding:14px 26px;border-radius:999px;font-weight:700;cursor:pointer;border:none;font-size:16px;text-decoration:none}
+  .btn-primary{background:var(--coral);color:#fff}.btn-primary:hover{background:var(--coral-d)}
+  .btn-ghost{background:#fff;color:var(--navy);border:2px solid var(--line)}
+  .btn-teal{background:var(--teal);color:#fff}
+
+  .announce{background:var(--navy);color:#fff;text-align:center;font-size:14.5px;padding:9px 16px}
+  .announce a{color:var(--gold);font-weight:700;text-decoration:none}
+
+  nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:1040px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand svg{width:38px;height:38px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:3px}
+  .brand b{font-family:Georgia,serif;font-size:17px}.brand b span{color:var(--teal)}
+
+  .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding:44px 0 30px}
+  .pill{display:inline-block;background:var(--teal);color:#fff;font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;letter-spacing:1px}
+  .hero h1{font-size:52px;line-height:1.06;margin:16px 0}
+  .hero h1 .g{color:var(--gold)}.hero h1 .c{color:var(--coral)}
+  .hero p.lead{font-size:19px;color:#2C3E63;margin-bottom:22px}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .facts{display:flex;gap:22px;margin-top:22px;flex-wrap:wrap}
+  .facts div b{font-family:Georgia,serif;font-size:22px;display:block}
+  .facts div span{font-size:12px;color:var(--muted)}
+  .herocard{background:var(--navy);border-radius:22px;padding:30px;color:#fff;box-shadow:var(--shadow)}
+  .herocard h3{color:#fff;font-size:15px;letter-spacing:1px;opacity:.7;margin-bottom:14px;font-family:Arial}
+  .chip{display:inline-block;background:#2C3E63;border-radius:999px;padding:8px 15px;margin:0 6px 8px 0;font-size:14px;font-weight:600}
+  .herocard .price{margin-top:16px;border-top:1px solid #2C3E63;padding-top:16px}
+  .herocard .price b{font-size:34px;font-family:Georgia,serif;color:var(--gold)}
+  .herocard .price s{opacity:.6}
+
+  .urgent{background:#FFF3E6;border-top:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center;padding:12px;font-weight:700;color:var(--coral-d)}
+
+  section{padding:52px 0}
+  .stitle{text-align:center;margin-bottom:34px}
+  .stitle span{color:var(--coral);font-weight:700;letter-spacing:2px;font-size:13px;text-transform:uppercase}
+  .stitle h2{font-size:34px;margin-top:6px}
+
+  table.grid{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+  table.grid th,table.grid td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--line);font-size:15px}
+  table.grid th{background:var(--navy);color:#fff;font-family:Georgia,serif;font-weight:700}
+  table.grid td:first-child{font-weight:700;color:var(--teal);width:120px}
+  table.grid tr:last-child td{border-bottom:none}
+
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;text-align:center;box-shadow:var(--shadow)}
+  .card .ico{font-size:30px}.card h3{font-size:17px;margin:8px 0 4px}.card p{font-size:13px;color:var(--muted)}
+
+  .band{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
+  .two ul{margin:14px 0 0 18px}.two li{margin-bottom:8px}
+  .photo{aspect-ratio:1.3;border-radius:18px;background:linear-gradient(135deg,#FFE9CF,#D5F0EA);display:flex;align-items:center;justify-content:center;color:#2C3E63;font-weight:700;border:1px solid var(--line)}
+
+  .pricebox{max-width:520px;margin:0 auto;background:#fff;border:2px solid var(--coral);border-radius:22px;padding:34px;text-align:center;box-shadow:var(--shadow)}
+  .pricebox .big{font-family:Georgia,serif;font-size:52px;color:var(--coral)}
+  .pricebox .was{color:var(--muted);font-size:18px}
+  .pricebox ul{list-style:none;margin:18px 0;text-align:left;display:inline-block}
+  .pricebox li{margin-bottom:8px}.pricebox li:before{content:"✓";color:var(--teal);font-weight:800;margin-right:8px}
+
+  .faq{max-width:760px;margin:0 auto}
+  details{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px;box-shadow:var(--shadow)}
+  summary{font-weight:700;cursor:pointer}
+  details p{margin-top:10px;color:var(--muted);font-size:15px}
+
+  .final{background:var(--navy);color:#fff;text-align:center;border-radius:22px;padding:44px}
+  .final h2{color:#fff;font-size:32px;margin-bottom:10px}
+  .final p{opacity:.8;margin-bottom:22px}
+
+  footer{background:var(--navy);color:#B9C3D8;padding:26px 0;font-size:13px;text-align:center;margin-top:40px}
+  @media(max-width:820px){.hero,.two{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.hero h1{font-size:38px}}
+</style>
+</head>
+<body>
+
+<div class="announce">🎒 August 11+ Bootcamp — daily live online, 3–28 Aug. Early-bird £199 ends 17 July → <a href="#book">Book your place</a></div>
+
+<nav>
+  <div class="brand">
+    <svg viewBox="0 0 160 160"><path d="M40,124 C60,120 74,100 84,84 S110,52 122,42" fill="none" stroke="#2E9C8E" stroke-width="8" stroke-linecap="round" stroke-dasharray="0.1 16"/><circle cx="80" cy="90" r="6" fill="#2E9C8E"/><circle cx="103" cy="63" r="6" fill="#2E9C8E"/><circle cx="40" cy="124" r="10" fill="#F08A3E"/><g transform="translate(124,40)" fill="#F4B740"><path d="M0,-17 L5.2,-5.2 L17,-3.4 L8,5 L10,17 L0,11.2 L-10,17 L-8,5 L-17,-3.4 L-5.2,-5.2 Z"/></g></svg>
+    <b>Phonics <span>to</span> Physics</b>
+  </div>
+  <a href="#book" class="btn btn-primary" style="padding:10px 20px;font-size:14px">Book a place</a>
+</nav>
+
+<div class="wrap">
+  <div class="hero">
+    <div>
+      <span class="pill">DAILY · LIVE · ONLINE</span>
+      <h1>Complete <span class="g">11+</span> Summer Bootcamp</h1>
+      <p class="lead">The whole exam, every week — daily live lessons this August, timed as the final run-up to the September grammar test.</p>
+      <div class="cta">
+        <a href="#book" class="btn btn-primary">Book your place</a>
+        <a href="#book" class="btn btn-ghost">See what's included</a>
+      </div>
+      <div class="facts">
+        <div><b>3–28 Aug</b><span>Mon–Fri, 4 weeks</span></div>
+        <div><b>9:30–10:30am</b><span>60 min live</span></div>
+        <div><b>Recorded</b><span>catch up anytime</span></div>
+        <div><b>DBS ✓</b><span>small group</span></div>
+      </div>
+    </div>
+    <div class="herocard">
+      <h3>COVERS THE WHOLE 11+</h3>
+      <span class="chip">📖 English</span><span class="chip">➗ Maths</span>
+      <span class="chip">🔤 Verbal Reasoning</span><span class="chip">🧩 Non-Verbal</span>
+      <div class="price">Early-bird <b>£199</b> &nbsp;<s>£249</s><br><span style="opacity:.7;font-size:13px">until 17 July · 20% off a 2nd child</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="urgent">⏳ Early-bird ends 17 July · places capped to keep the group small — book early to secure a spot</div>
+
+<section>
+  <div class="wrap">
+    <div class="stitle"><span>What's covered</span><h2>All four exam components — every week</h2></div>
+    <div class="cards">
+      <div class="card"><div class="ico">📖</div><h3>English</h3><p>Comprehension, vocabulary, spelling & grammar.</p></div>
+      <div class="card"><div class="ico">➗</div><h3>Maths</h3><p>Arithmetic fluency, word problems, exam topics.</p></div>
+      <div class="card"><div class="ico">🔤</div><h3>Verbal Reasoning</h3><p>Codes, letter & word logic, sequences.</p></div>
+      <div class="card"><div class="ico">🧩</div><h3>Non-Verbal</h3><p>Shapes, rotations, patterns & matrices.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="stitle"><span>The weekly rhythm</span><h2>What each week looks like</h2></div>
+    <table class="grid">
+      <tr><th>Day</th><th>Focus</th><th>Example content</th></tr>
+      <tr><td>Monday</td><td>English</td><td>Comprehension technique, vocabulary, grammar</td></tr>
+      <tr><td>Tuesday</td><td>Maths</td><td>Arithmetic, word problems, topic of the week</td></tr>
+      <tr><td>Wednesday</td><td>Verbal Reasoning</td><td>Codes, letter/word logic, sequences</td></tr>
+      <tr><td>Thursday</td><td>Non-Verbal</td><td>Shapes, rotations, patterns, matrices</td></tr>
+      <tr><td>Friday</td><td>Timed practice</td><td>Exam-style questions under time + group review</td></tr>
+    </table>
+    <p style="text-align:center;color:var(--muted);margin-top:16px;font-size:15px">Difficulty rises week on week — building to a full timed <b>mock exam</b> in the final week, days before the real thing.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap two">
+    <div class="photo">Photo of Chris teaching</div>
+    <div>
+      <span style="color:var(--coral);font-weight:700;letter-spacing:2px;font-size:13px">WHY IT WORKS</span>
+      <h2 style="font-size:30px;margin:6px 0 6px">Steady daily practice beats last-minute cramming</h2>
+      <p style="color:#2C3E63">A little every day through the holidays keeps momentum and builds real confidence for exam day.</p>
+      <ul>
+        <li><b>Small group</b> — your child is seen and supported, not lost in a crowd.</li>
+        <li><b>Every session recorded</b> — away for a few days? Catch up anytime.</li>
+        <li><b>Workbooks & daily homework</b> included, self-marking where possible.</li>
+        <li><b>A full mock + feedback</b> so exam day feels familiar.</li>
+        <li><b>DBS-checked</b>, results-focused tutor.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="book">
+  <div class="wrap">
+    <div class="stitle"><span>Book your place</span><h2>One price, everything included</h2></div>
+    <div class="pricebox">
+      <div class="big">£199</div>
+      <div class="was">early-bird until 17 July · then £249</div>
+      <ul>
+        <li>20 live lessons (Mon–Fri, 3–28 Aug)</li>
+        <li>All session recordings</li>
+        <li>Weekly workbooks & daily homework</li>
+        <li>Full mock exam with feedback</li>
+        <li>20% off a second child</li>
+      </ul>
+      <div><a href="#" class="btn btn-primary" style="width:100%">Book your place</a></div>
+      <p style="margin-top:14px;font-size:14px;color:var(--muted)">Places are capped to keep the group small — book early to secure a spot.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="stitle"><span>Questions</span><h2>Good to know</h2></div>
+    <div class="faq">
+      <details open><summary>What level is it for?</summary><p>Children entering Year 6 in September 2026 and sitting the state grammar 11+.</p></details>
+      <details><summary>What if we're on holiday for a few days?</summary><p>Every session is recorded and shared, so your child can catch up anytime — no falling behind.</p></details>
+      <details><summary>Which exam board does it cover?</summary><p>The core GL/CEM-style skills across all four components. Tell me your target schools and I'll flag anything specific.</p></details>
+      <details><summary>How big is the group?</summary><p>Places are capped so it stays interactive and every child gets attention.</p></details>
+      <details><summary>What's your refund policy?</summary><p>[Your policy — e.g. full refund up to 7 days before the start date.]</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="final">
+    <h2>Give your child the best possible run-up</h2>
+    <p>Daily live practice, a small group, and a full mock — all before the September exam.</p>
+    <a href="#book" class="btn btn-primary">Book your place</a>
+  </div>
+</section>
+
+<footer>Phonics to Physics · Small steps, big results. · hello@phonicstophysics.com · DBS-checked tutor</footer>
+
+</body>
+</html>

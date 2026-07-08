@@ -1,0 +1,59 @@
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Complete 11+ Summer Bootcamp flyer">
+  <rect width="1080" height="1080" fill="#1F2D4A"/>
+  <!-- faint journey path background -->
+  <path d="M80,940 C360,880 520,660 660,520 S980,180 1010,120" fill="none" stroke="#2C3E63" stroke-width="14" stroke-linecap="round" stroke-dasharray="0.1 34"/>
+
+  <!-- top brand row -->
+  <g transform="translate(70,70)">
+    <path d="M4,64 C22,60 32,44 40,32 S60,10 70,4" fill="none" stroke="#2E9C8E" stroke-width="5" stroke-linecap="round" stroke-dasharray="0.1 11"/>
+    <circle cx="4" cy="64" r="7" fill="#F08A3E"/>
+    <g transform="translate(72,2)" fill="#F4B740"><path d="M0,-13 L4,-4 L13,-2.6 L6,4 L8,13 L0,8.6 L-8,13 L-6,4 L-13,-2.6 L-4,-4 Z"/></g>
+    <text x="98" y="26" font-family="Georgia,serif" font-size="26" font-weight="700" fill="#FFFFFF">Phonics to Physics</text>
+    <text x="99" y="52" font-family="Arial,sans-serif" font-size="14" letter-spacing="3" fill="#9AA6BF">SMALL STEPS, BIG RESULTS</text>
+  </g>
+
+  <!-- badge -->
+  <g transform="translate(70,210)">
+    <rect x="0" y="0" width="250" height="52" rx="26" fill="#2E9C8E"/>
+    <text x="125" y="34" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">DAILY · LIVE · ONLINE</text>
+  </g>
+
+  <!-- headline -->
+  <text x="70" y="392" font-family="Georgia,serif" font-size="118" font-weight="700" fill="#FFFFFF">Complete</text>
+  <text x="70" y="516" font-family="Georgia,serif" font-size="140" font-weight="700" fill="#F4B740">11+</text>
+  <text x="372" y="516" font-family="Georgia,serif" font-size="112" font-weight="700" fill="#FFFFFF">Summer</text>
+  <text x="70" y="636" font-family="Georgia,serif" font-size="118" font-weight="700" fill="#F08A3E">Bootcamp</text>
+
+  <!-- subline -->
+  <text x="74" y="710" font-family="Arial,sans-serif" font-size="30" fill="#D7DEEC">The whole exam, every week — the final run-up to</text>
+  <text x="74" y="750" font-family="Arial,sans-serif" font-size="30" fill="#D7DEEC">the September grammar test.</text>
+
+  <!-- four components chips -->
+  <g font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#1F2D4A">
+    <g transform="translate(74,800)"><rect width="180" height="52" rx="26" fill="#FBF5EC"/><text x="90" y="34" text-anchor="middle">English</text></g>
+    <g transform="translate(270,800)"><rect width="150" height="52" rx="26" fill="#FBF5EC"/><text x="75" y="34" text-anchor="middle">Maths</text></g>
+    <g transform="translate(436,800)"><rect width="290" height="52" rx="26" fill="#FBF5EC"/><text x="145" y="34" text-anchor="middle">Verbal Reasoning</text></g>
+    <g transform="translate(742,800)"><rect width="264" height="52" rx="26" fill="#FBF5EC"/><text x="132" y="34" text-anchor="middle">Non-Verbal</text></g>
+  </g>
+
+  <!-- details bar -->
+  <g transform="translate(70,900)">
+    <rect x="0" y="0" width="940" height="110" rx="20" fill="#FFFFFF"/>
+    <g font-family="Arial,sans-serif">
+      <text x="34" y="46" font-size="20" fill="#6B7280">DATES</text>
+      <text x="34" y="82" font-size="30" font-weight="700" fill="#1F2D4A">3–28 Aug</text>
+
+      <line x1="250" y1="24" x2="250" y2="86" stroke="#EADFCB" stroke-width="2"/>
+      <text x="284" y="46" font-size="20" fill="#6B7280">MON–FRI</text>
+      <text x="284" y="82" font-size="30" font-weight="700" fill="#1F2D4A">9:30–10:30am</text>
+
+      <line x1="600" y1="24" x2="600" y2="86" stroke="#EADFCB" stroke-width="2"/>
+      <text x="634" y="46" font-size="20" fill="#6B7280">EARLY BIRD</text>
+      <text x="634" y="82" font-size="30" font-weight="700" fill="#F08A3E">£199</text>
+      <text x="726" y="82" font-size="20" fill="#6B7280">until 17 July</text>
+    </g>
+  </g>
+
+  <!-- footer CTA -->
+  <text x="540" y="1052" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#5FC8BB">phonicstophysics.com/summer-11-plus  ·  places are limited</text>
+</svg>
