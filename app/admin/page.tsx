@@ -11,7 +11,7 @@ const sections = [
     icon: "✉️",
     title: "Enquiries",
     desc: "New enquiries from the contact form, with status tracking.",
-    soon: true,
+    href: "/admin/enquiries",
   },
   {
     icon: "🎟️",

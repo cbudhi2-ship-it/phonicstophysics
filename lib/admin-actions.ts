@@ -219,6 +219,18 @@ export async function adjustTokens(
   return { ok: true };
 }
 
+export async function setEnquiryStatus(formData: FormData) {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  const status = String(formData.get("status") ?? "");
+  if (!id || !["new", "contacted", "converted", "declined"].includes(status)) {
+    return;
+  }
+  const admin = createAdminClient();
+  await admin.from("enquiries").update({ status }).eq("id", id);
+  revalidatePath("/admin/enquiries");
+}
+
 /**
  * Permanently delete a client and everything owned by them (children,
  * lesson ledger, bookings all cascade). Refuses to delete an admin.

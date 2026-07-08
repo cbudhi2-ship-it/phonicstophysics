@@ -105,7 +105,26 @@ export async function POST(request: Request) {
     }
   }
 
-  // TODO(Phase 2): persist the enquiry to the database with status "new".
+  // Persist the enquiry (status "new") so it shows in the admin inbox even
+  // if email delivery later fails. Best-effort — don't block on DB issues.
+  try {
+    const { createAdminClient } = await import("@/lib/supabase/admin");
+    if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      await createAdminClient()
+        .from("enquiries")
+        .insert({
+          parent_name: data.parentName,
+          email: data.email,
+          phone: data.phone || null,
+          year_group: data.yearGroup,
+          subjects: data.subjects,
+          mode: data.mode,
+          message: data.message,
+        });
+    }
+  } catch (err) {
+    console.error("[enquiry] failed to persist:", err);
+  }
 
   // SMTP config (Namecheap Private Email). Sending "from" must be the
   // authenticated mailbox — the provider won't relay arbitrary addresses.
