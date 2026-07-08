@@ -111,7 +111,7 @@ export default async function AdminClientsPage() {
                 </td>
                 <td className="px-4 py-3 text-muted">{fmtDate(c.created_at)}</td>
                 <td className="px-4 py-3">
-                  <ClientActions id={c.id} />
+                  <ClientActions id={c.id} name={c.full_name ?? c.email} />
                 </td>
               </tr>
             ))}

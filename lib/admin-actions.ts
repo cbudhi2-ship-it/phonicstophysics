@@ -184,3 +184,29 @@ export async function resetClientPassword(
   if (error) return { ok: false };
   return { ok: true, password };
 }
+
+/**
+ * Permanently delete a client and everything owned by them (children,
+ * lesson ledger, bookings all cascade). Refuses to delete an admin.
+ */
+export async function deleteClient(
+  id: string,
+): Promise<{ ok: boolean; error?: string }> {
+  await requireAdmin();
+  const admin = createAdminClient();
+
+  const { data: prof } = await admin
+    .from("profiles")
+    .select("role")
+    .eq("id", id)
+    .single();
+  if (prof?.role === "admin") {
+    return { ok: false, error: "You can't remove an admin account." };
+  }
+
+  const { error } = await admin.auth.admin.deleteUser(id);
+  if (error) return { ok: false, error: "Sorry — couldn't remove that client." };
+
+  revalidatePath("/admin/clients");
+  return { ok: true };
+}

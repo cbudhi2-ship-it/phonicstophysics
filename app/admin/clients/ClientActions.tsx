@@ -4,16 +4,23 @@ import { useState, useTransition } from "react";
 import {
   resetClientPassword,
   sendClientResetLink,
+  deleteClient,
 } from "@/lib/admin-actions";
 
-export function ClientActions({ id }: { id: string }) {
+export function ClientActions({
+  id,
+  name,
+}: {
+  id: string;
+  name: string;
+}) {
   const [pending, start] = useTransition();
   const [note, setNote] = useState<string | null>(null);
   const [temp, setTemp] = useState<string | null>(null);
 
   return (
     <div className="flex flex-col items-start gap-1">
-      <div className="flex gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
           disabled={pending}
@@ -49,6 +56,27 @@ export function ClientActions({ id }: { id: string }) {
           className="text-[13px] font-semibold text-navy-soft hover:underline disabled:opacity-50"
         >
           Set temp password
+        </button>
+        <span className="text-line">·</span>
+        <button
+          type="button"
+          disabled={pending}
+          onClick={() => {
+            if (
+              !window.confirm(
+                `Permanently remove ${name || "this client"}? This deletes their account, children, lesson balance and bookings. This can't be undone.`,
+              )
+            )
+              return;
+            start(async () => {
+              setTemp(null);
+              const r = await deleteClient(id);
+              if (!r.ok) setNote(r.error ?? "Couldn't remove");
+            });
+          }}
+          className="text-[13px] font-semibold text-coral-dark hover:underline disabled:opacity-50"
+        >
+          Remove
         </button>
       </div>
       {note && <span className="text-[12px] text-muted">{note}</span>}
