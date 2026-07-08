@@ -16,6 +16,12 @@ const sections: Section[] = [
     href: "/admin/clients",
   },
   {
+    icon: "🎯",
+    title: "Targets & homework",
+    desc: "Set goals and assign homework for every child in one place.",
+    href: "/admin/learning",
+  },
+  {
     icon: "💬",
     title: "Messages",
     desc: "Parent message threads in one inbox — newest first, with unread flags.",

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { sendAdminMessage } from "@/lib/admin-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -64,6 +65,48 @@ export default async function AdminMessagesPage() {
       <p className="mb-6 text-[15px] text-muted">
         {list.length} {list.length === 1 ? "thread" : "threads"}
       </p>
+
+      {/* Start a new message to any client */}
+      <form action={sendAdminMessage} className="card mb-6">
+        <h2 className="mb-3 text-[16px]">New message</h2>
+        {(profiles ?? []).length === 0 ? (
+          <p className="text-[14px] text-muted">
+            No clients yet — add one under{" "}
+            <Link href="/admin/clients" className="font-semibold text-teal">
+              Clients
+            </Link>
+            .
+          </p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            <select
+              name="parent_id"
+              required
+              defaultValue=""
+              className="rounded-lg border border-line bg-white px-3 py-2 text-[14px] outline-none focus:border-teal"
+            >
+              <option value="" disabled>
+                Choose a client…
+              </option>
+              {(profiles ?? []).map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.full_name ?? "Client"}
+                </option>
+              ))}
+            </select>
+            <textarea
+              name="body"
+              required
+              rows={3}
+              placeholder="Write a message…"
+              className="rounded-lg border border-line bg-white px-3 py-2 text-[14px] outline-none focus:border-teal"
+            />
+            <div>
+              <button className="btn btn-primary">Send message</button>
+            </div>
+          </div>
+        )}
+      </form>
 
       {list.length === 0 ? (
         <div className="card text-center text-muted">

@@ -325,6 +325,8 @@ export async function sendAdminMessage(formData: FormData) {
     }).catch(() => {});
   }
   revalidatePath(`/admin/clients`);
+  revalidatePath(`/admin/messages`);
+  revalidatePath(`/admin/clients/${parentId}`);
 }
 
 export async function setEnquiryStatus(formData: FormData) {
