@@ -235,6 +235,98 @@ export async function setPayInPerson(
   return { ok: true };
 }
 
+// --- Phase 4: targets, homework, messaging (admin side) ---
+
+export async function addTarget(formData: FormData) {
+  await requireAdmin();
+  const childId = String(formData.get("child_id") ?? "");
+  const title = String(formData.get("title") ?? "").trim().slice(0, 200);
+  const detail = String(formData.get("detail") ?? "").trim().slice(0, 1000);
+  if (!childId || !title) return;
+  const admin = createAdminClient();
+  await admin
+    .from("targets")
+    .insert({ child_id: childId, title, detail: detail || null });
+  revalidatePath(`/admin/clients`);
+}
+
+export async function setTargetStatus(formData: FormData) {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  const status = String(formData.get("status") ?? "");
+  if (!id || !["active", "achieved"].includes(status)) return;
+  const admin = createAdminClient();
+  await admin.from("targets").update({ status }).eq("id", id);
+  revalidatePath(`/admin/clients`);
+}
+
+export async function deleteTarget(formData: FormData) {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+  const admin = createAdminClient();
+  await admin.from("targets").delete().eq("id", id);
+  revalidatePath(`/admin/clients`);
+}
+
+export async function addHomework(formData: FormData) {
+  await requireAdmin();
+  const childId = String(formData.get("child_id") ?? "");
+  const title = String(formData.get("title") ?? "").trim().slice(0, 200);
+  const detail = String(formData.get("detail") ?? "").trim().slice(0, 2000);
+  const dueDate = String(formData.get("due_date") ?? "").trim();
+  const attachment = String(formData.get("attachment_url") ?? "").trim();
+  if (!childId || !title) return;
+  const admin = createAdminClient();
+  await admin.from("homework").insert({
+    child_id: childId,
+    title,
+    detail: detail || null,
+    due_date: dueDate || null,
+    attachment_url: attachment || null,
+  });
+  revalidatePath(`/admin/clients`);
+}
+
+export async function deleteHomework(formData: FormData) {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+  const admin = createAdminClient();
+  await admin.from("homework").delete().eq("id", id);
+  revalidatePath(`/admin/clients`);
+}
+
+/** Chris replies to a parent; notifies them by email. */
+export async function sendAdminMessage(formData: FormData) {
+  await requireAdmin();
+  const parentId = String(formData.get("parent_id") ?? "");
+  const body = String(formData.get("body") ?? "").trim().slice(0, 4000);
+  if (!parentId || !body) return;
+
+  const admin = createAdminClient();
+  await admin
+    .from("messages")
+    .insert({ parent_id: parentId, sender: "admin", body });
+
+  const { sendMail } = await import("@/lib/email");
+  const { data } = await admin.auth.admin.getUserById(parentId);
+  const email = data.user?.email;
+  const url =
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.phonicstophysics.com";
+  if (email) {
+    await sendMail({
+      to: email,
+      subject: "A message from Chris — Phonics to Physics",
+      html: `<p>Hi,</p><p>You have a new message in your parent portal:</p>
+        <blockquote>${body.replace(/</g, "&lt;")}</blockquote>
+        <p><a href="${url}/dashboard/messages">Read &amp; reply</a></p>
+        <p>— Phonics to Physics</p>`,
+    }).catch(() => {});
+  }
+  revalidatePath(`/admin/clients`);
+}
+
 export async function setEnquiryStatus(formData: FormData) {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");

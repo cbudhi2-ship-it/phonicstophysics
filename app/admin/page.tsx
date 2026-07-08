@@ -22,14 +22,14 @@ const sections = [
   {
     icon: "🎯",
     title: "Targets & homework",
-    desc: "Set learning goals and assign homework per child.",
-    soon: true,
+    desc: "Set learning goals and assign homework — open a client to manage.",
+    href: "/admin/clients",
   },
   {
     icon: "💬",
     title: "Messages",
-    desc: "Reply to parent messages from one inbox.",
-    soon: true,
+    desc: "Reply to parent messages — open a client to see their thread.",
+    href: "/admin/clients",
   },
   {
     icon: "📅",
