@@ -23,12 +23,14 @@ type Child = { id: string; name: string; tier: Tier | null };
 export function InlineBooking({
   childrenList,
   balances,
+  payInPerson = false,
   parentId,
   name,
   email,
 }: {
   childrenList: Child[];
   balances: Record<Tier, number>;
+  payInPerson?: boolean;
   parentId: string;
   name: string;
   email: string;
@@ -94,10 +96,11 @@ export function InlineBooking({
 
       <p className="mb-3 text-[14px] text-muted">
         Booking for <strong className="text-navy">{selected.name}</strong> ·{" "}
-        {tierLabel[tier]} · {balance} left
+        {tierLabel[tier]}
+        {payInPerson ? " · pay in person" : ` · ${balance} left`}
       </p>
 
-      {balance <= 0 ? (
+      {!payInPerson && balance <= 0 ? (
         <p className="rounded-xl border border-gold/50 bg-gold/10 px-4 py-3 text-[14px] text-navy-soft">
           You&apos;ve no {tierLabel[tier]} lessons left — buy one above, then
           book here.

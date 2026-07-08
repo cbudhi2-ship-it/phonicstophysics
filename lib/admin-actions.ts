@@ -219,6 +219,22 @@ export async function adjustTokens(
   return { ok: true };
 }
 
+/** Toggle whether a client may book without buying tokens (pays in person). */
+export async function setPayInPerson(
+  id: string,
+  value: boolean,
+): Promise<{ ok: boolean }> {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("profiles")
+    .update({ pay_in_person: value })
+    .eq("id", id);
+  if (error) return { ok: false };
+  revalidatePath("/admin/clients");
+  return { ok: true };
+}
+
 export async function setEnquiryStatus(formData: FormData) {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");

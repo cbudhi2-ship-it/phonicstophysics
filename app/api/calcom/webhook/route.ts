@@ -95,36 +95,46 @@ export async function POST(request: Request) {
   const admin = createAdminClient();
 
   if (trigger === "BOOKING_CREATED" && parentId && tier) {
-    // Idempotency: if we've already processed this booking, stop.
-    const { data: seen } = await admin
-      .from("token_transactions")
-      .select("id")
-      .eq("cal_booking_uid", uid)
-      .eq("type", "booking")
+    // Pay-in-person clients book freely — no token is spent.
+    const { data: prof } = await admin
+      .from("profiles")
+      .select("pay_in_person")
+      .eq("id", parentId)
       .maybeSingle();
-    if (seen) return NextResponse.json({ received: true });
+    const payInPerson = Boolean(prof?.pay_in_person);
 
-    // Re-check the balance server-side. If there's nothing to spend (a race,
-    // or a booking made without buying), auto-cancel it and notify the parent.
-    const { getBalances } = await import("@/lib/tokens");
-    const balances = await getBalances(admin, parentId);
-    const available = balances[tier as keyof typeof balances] ?? 0;
+    if (!payInPerson) {
+      // Idempotency: skip if we've already deducted for this booking.
+      const { data: seen } = await admin
+        .from("token_transactions")
+        .select("id")
+        .eq("cal_booking_uid", uid)
+        .eq("type", "booking")
+        .maybeSingle();
 
-    if (available < 1) {
-      await cancelCalBooking(uid, "No lesson credit available");
-      await notifyNoCredit(admin, parentId);
-      return NextResponse.json({ received: true, cancelled: "no_credit" });
+      if (!seen) {
+        // Re-check the balance. If there's nothing to spend, auto-cancel.
+        const { getBalances } = await import("@/lib/tokens");
+        const balances = await getBalances(admin, parentId);
+        const available = balances[tier as keyof typeof balances] ?? 0;
+
+        if (available < 1) {
+          await cancelCalBooking(uid, "No lesson credit available");
+          await notifyNoCredit(admin, parentId);
+          return NextResponse.json({ received: true, cancelled: "no_credit" });
+        }
+
+        await admin.from("token_transactions").insert({
+          parent_id: parentId,
+          tier,
+          type: "booking",
+          amount: -1,
+          cal_booking_uid: uid,
+        });
+      }
     }
 
-    // Deduct one token and mirror the booking.
-    await admin.from("token_transactions").insert({
-      parent_id: parentId,
-      tier,
-      type: "booking",
-      amount: -1,
-      cal_booking_uid: uid,
-    });
-
+    // Always mirror the booking so it shows on the Calendar (idempotent).
     await admin.from("bookings").upsert(
       {
         parent_id: parentId,
@@ -147,7 +157,16 @@ export async function POST(request: Request) {
       .eq("cal_booking_uid", uid)
       .single();
 
-    if (booking?.starts_at) {
+    // Only refund if a token was actually spent on this booking — pay-in-person
+    // bookings never deducted one, so there's nothing to give back.
+    const { data: deduction } = await admin
+      .from("token_transactions")
+      .select("id")
+      .eq("cal_booking_uid", uid)
+      .eq("type", "booking")
+      .maybeSingle();
+
+    if (deduction && booking?.starts_at) {
       const hoursUntil =
         (new Date(booking.starts_at).getTime() - Date.now()) / 3_600_000;
       if (hoursUntil > CANCEL_WINDOW_HOURS) {

@@ -9,6 +9,7 @@ export type Profile = {
   role: Role;
   status: AccountStatus;
   full_name: string | null;
+  pay_in_person: boolean;
 };
 
 export type SessionUser = {
@@ -38,7 +39,7 @@ export async function getSession(): Promise<{
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id, role, status, full_name")
+    .select("id, role, status, full_name, pay_in_person")
     .eq("id", user.id)
     .single();
 

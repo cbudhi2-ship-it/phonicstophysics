@@ -5,14 +5,17 @@ import {
   resetClientPassword,
   sendClientResetLink,
   deleteClient,
+  setPayInPerson,
 } from "@/lib/admin-actions";
 
 export function ClientActions({
   id,
   name,
+  payInPerson,
 }: {
   id: string;
   name: string;
+  payInPerson: boolean;
 }) {
   const [pending, start] = useTransition();
   const [note, setNote] = useState<string | null>(null);
@@ -20,6 +23,20 @@ export function ClientActions({
 
   return (
     <div className="flex flex-col items-start gap-1">
+      <label className="flex cursor-pointer items-center gap-1.5 text-[13px] font-semibold text-navy-soft">
+        <input
+          type="checkbox"
+          checked={payInPerson}
+          disabled={pending}
+          onChange={(e) =>
+            start(async () => {
+              await setPayInPerson(id, e.target.checked);
+            })
+          }
+          className="accent-teal"
+        />
+        Pays in person
+      </label>
       <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"

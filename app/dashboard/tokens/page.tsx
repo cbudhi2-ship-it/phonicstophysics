@@ -25,7 +25,8 @@ export default async function TokensTab({
   const supabase = await createClient();
 
   const enabled = profile?.status === "enabled";
-  const canBuy = enabled && stripeConfigured();
+  const payInPerson = Boolean(profile?.pay_in_person);
+  const canBuy = enabled && stripeConfigured() && !payInPerson;
 
   const [{ data: children }, { data: txns }, balances] = await Promise.all([
     supabase.from("children").select("id, name, tier"),
@@ -63,7 +64,16 @@ export default async function TokensTab({
         </div>
       )}
 
-      {/* Balances */}
+      {payInPerson && (
+        <div className="rounded-xl border border-teal/40 bg-[#EAF7F4] px-4 py-3 text-[14px] text-navy-soft">
+          You&apos;re set up to <strong>pay Chris in person</strong> — just book
+          your lessons below, no need to buy in advance.
+        </div>
+      )}
+
+      {/* Balances + Buy (hidden for pay-in-person clients) */}
+      {!payInPerson && (
+      <>
       <section>
         <h2 className="mb-3 text-[20px]">Your lesson balance</h2>
         <div className="grid gap-4 sm:grid-cols-3">
@@ -124,6 +134,8 @@ export default async function TokensTab({
           ))}
         </div>
       </section>
+      </>
+      )}
 
       {/* Book */}
       <section>
@@ -135,6 +147,7 @@ export default async function TokensTab({
         <InlineBooking
           childrenList={kids}
           balances={bal}
+          payInPerson={payInPerson}
           parentId={user?.id ?? ""}
           name={profile?.full_name ?? ""}
           email={user?.email ?? ""}

@@ -19,6 +19,7 @@ type ClientRow = {
   email: string;
   lastSignIn: string | null;
   balances: Balances;
+  payInPerson: boolean;
 };
 
 function fmtDate(iso: string | null): string {
@@ -38,7 +39,7 @@ export default async function AdminClientsPage() {
     await Promise.all([
       admin
         .from("profiles")
-        .select("id, full_name, phone, status, role, created_at")
+        .select("id, full_name, phone, status, role, created_at, pay_in_person")
         .neq("role", "admin")
         .order("created_at", { ascending: false }),
       admin.auth.admin.listUsers({ perPage: 1000 }),
@@ -73,6 +74,9 @@ export default async function AdminClientsPage() {
     email: metaById.get(p.id)?.email ?? "",
     lastSignIn: metaById.get(p.id)?.lastSignIn ?? null,
     balances: balById.get(p.id) ?? emptyBalances(),
+    payInPerson: Boolean(
+      (p as { pay_in_person?: boolean }).pay_in_person,
+    ),
   }));
 
   return (
@@ -134,7 +138,11 @@ export default async function AdminClientsPage() {
                 </td>
                 <td className="px-4 py-3 text-muted">{fmtDate(c.created_at)}</td>
                 <td className="px-4 py-3">
-                  <ClientActions id={c.id} name={c.full_name ?? c.email} />
+                  <ClientActions
+                    id={c.id}
+                    name={c.full_name ?? c.email}
+                    payInPerson={c.payInPerson}
+                  />
                 </td>
               </tr>
             ))}
