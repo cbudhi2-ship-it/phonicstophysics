@@ -186,6 +186,40 @@ export async function resetClientPassword(
 }
 
 /**
+ * Manually adjust a client's lesson balance (goodwill credit, referral,
+ * fixing an edge case). Writes an append-only `adjustment` ledger row.
+ */
+export async function adjustTokens(
+  formData: FormData,
+): Promise<{ ok: boolean; error?: string }> {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  const tier = String(formData.get("tier") ?? "");
+  const amount = Math.trunc(Number(formData.get("amount") ?? 0));
+  const note = String(formData.get("note") ?? "").trim().slice(0, 200);
+
+  if (!id || !["primary", "secondary", "a_level"].includes(tier)) {
+    return { ok: false, error: "Pick a tier." };
+  }
+  if (!Number.isFinite(amount) || amount === 0) {
+    return { ok: false, error: "Enter a non-zero amount (e.g. 1 or -1)." };
+  }
+
+  const admin = createAdminClient();
+  const { error } = await admin.from("token_transactions").insert({
+    parent_id: id,
+    tier,
+    type: "adjustment",
+    amount,
+    note: note || "Manual adjustment by admin",
+  });
+  if (error) return { ok: false, error: "Sorry — couldn't apply that." };
+
+  revalidatePath("/admin/clients");
+  return { ok: true };
+}
+
+/**
  * Permanently delete a client and everything owned by them (children,
  * lesson ledger, bookings all cascade). Refuses to delete an admin.
  */
