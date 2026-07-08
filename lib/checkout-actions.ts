@@ -2,10 +2,51 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import type Stripe from "stripe";
 import { requireClient } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getStripe } from "@/lib/stripe";
 import { findProduct } from "@/lib/tokens";
+
+type AdminClient = ReturnType<typeof createAdminClient>;
+
+/**
+ * Return a Stripe customer id that is valid for the CURRENT Stripe account/mode.
+ * A stored id from a different mode (e.g. a test customer after switching to
+ * live) is discarded and replaced — so test→live switches don't break checkout.
+ */
+async function ensureCustomer(
+  stripe: Stripe,
+  admin: AdminClient,
+  userId: string,
+  email: string | null,
+  storedId: string | null,
+): Promise<string> {
+  if (storedId) {
+    try {
+      const existing = await stripe.customers.retrieve(storedId);
+      if (!("deleted" in existing && existing.deleted)) return storedId;
+    } catch {
+      // Not found in this mode — fall through and make a new one.
+    }
+  }
+  const customer = await stripe.customers.create({
+    email: email ?? undefined,
+    metadata: { parent_id: userId },
+  });
+  await admin
+    .from("profiles")
+    .update({ stripe_customer_id: customer.id })
+    .eq("id", userId);
+  return customer.id;
+}
+
+async function baseUrl(): Promise<string> {
+  const h = await headers();
+  const host = h.get("host") ?? "www.phonicstophysics.com";
+  const proto = host.startsWith("localhost") ? "http" : "https";
+  return `${proto}://${host}`;
+}
 
 /**
  * Start a Stripe Checkout for a token pack. Only enabled clients can buy.
@@ -27,48 +68,44 @@ export async function startCheckout(formData: FormData) {
     redirect("/dashboard/tokens?error=unavailable");
   }
 
-  const admin = createAdminClient();
-
-  // Ensure the parent has a Stripe customer.
-  const { data: prof } = await admin
-    .from("profiles")
-    .select("stripe_customer_id")
-    .eq("id", user!.id)
-    .single();
-
-  let customerId = prof?.stripe_customer_id as string | null;
-  if (!customerId) {
-    const customer = await stripe!.customers.create({
-      email: user!.email ?? undefined,
-      metadata: { parent_id: user!.id },
-    });
-    customerId = customer.id;
-    await admin
+  // Build the session inside try/catch so any Stripe error becomes a friendly
+  // message rather than a crash page. redirect() must run AFTER the try/catch.
+  let dest = "/dashboard/tokens?error=unavailable";
+  try {
+    const admin = createAdminClient();
+    const { data: prof } = await admin
       .from("profiles")
-      .update({ stripe_customer_id: customerId })
-      .eq("id", user!.id);
+      .select("stripe_customer_id")
+      .eq("id", user!.id)
+      .single();
+
+    const customerId = await ensureCustomer(
+      stripe!,
+      admin,
+      user!.id,
+      user!.email,
+      (prof?.stripe_customer_id as string | null) ?? null,
+    );
+
+    const session = await stripe!.checkout.sessions.create({
+      mode: "payment",
+      customer: customerId,
+      line_items: [{ price: priceId, quantity: 1 }],
+      metadata: {
+        parent_id: user!.id,
+        tier,
+        tokens: String(tokens),
+        pack_label: product!.label,
+      },
+      success_url: `${await baseUrl()}/dashboard/tokens?bought=1`,
+      cancel_url: `${await baseUrl()}/dashboard/tokens?canceled=1`,
+    });
+    if (session.url) dest = session.url;
+  } catch (err) {
+    console.error("[checkout] failed:", err);
   }
 
-  const h = await headers();
-  const host = h.get("host") ?? "www.phonicstophysics.com";
-  const proto = host.startsWith("localhost") ? "http" : "https";
-  const base = `${proto}://${host}`;
-
-  const session = await stripe!.checkout.sessions.create({
-    mode: "payment",
-    customer: customerId,
-    line_items: [{ price: priceId, quantity: 1 }],
-    metadata: {
-      parent_id: user!.id,
-      tier,
-      tokens: String(tokens),
-      pack_label: product!.label,
-    },
-    success_url: `${base}/dashboard/tokens?bought=1`,
-    cancel_url: `${base}/dashboard/tokens?canceled=1`,
-  });
-
-  redirect(session.url ?? "/dashboard/tokens?error=unavailable");
+  redirect(dest);
 }
 
 /** Open the Stripe Customer Portal (receipts, saved cards). */
@@ -77,23 +114,31 @@ export async function openCustomerPortal() {
   const stripe = getStripe();
   if (!stripe) redirect("/dashboard/tokens?error=unavailable");
 
-  const admin = createAdminClient();
-  const { data: prof } = await admin
-    .from("profiles")
-    .select("stripe_customer_id")
-    .eq("id", user!.id)
-    .single();
+  let dest = "/dashboard/tokens?error=unavailable";
+  try {
+    const admin = createAdminClient();
+    const { data: prof } = await admin
+      .from("profiles")
+      .select("stripe_customer_id")
+      .eq("id", user!.id)
+      .single();
 
-  const customerId = prof?.stripe_customer_id as string | null;
-  if (!customerId) redirect("/dashboard/tokens?error=no_customer");
+    const customerId = await ensureCustomer(
+      stripe!,
+      admin,
+      user!.id,
+      user!.email,
+      (prof?.stripe_customer_id as string | null) ?? null,
+    );
 
-  const h = await headers();
-  const host = h.get("host") ?? "www.phonicstophysics.com";
-  const proto = host.startsWith("localhost") ? "http" : "https";
+    const portal = await stripe!.billingPortal.sessions.create({
+      customer: customerId,
+      return_url: `${await baseUrl()}/dashboard/tokens`,
+    });
+    if (portal.url) dest = portal.url;
+  } catch (err) {
+    console.error("[portal] failed:", err);
+  }
 
-  const portal = await stripe!.billingPortal.sessions.create({
-    customer: customerId,
-    return_url: `${proto}://${host}/dashboard/tokens`,
-  });
-  redirect(portal.url);
+  redirect(dest);
 }
