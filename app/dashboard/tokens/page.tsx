@@ -9,7 +9,7 @@ import {
 } from "@/lib/tokens";
 import { stripeConfigured } from "@/lib/stripe";
 import { startCheckout, openCustomerPortal } from "@/lib/checkout-actions";
-import { BookLessonButton } from "./BookLessonButton";
+import { InlineBooking } from "./InlineBooking";
 
 export const dynamic = "force-dynamic";
 
@@ -132,41 +132,13 @@ export default async function TokensTab({
           Pick a slot from Chris&apos;s availability. One lesson is used per
           booking; cancel free up to 24 hours before.
         </p>
-        {kids.length === 0 ? (
-          <p className="rounded-xl border border-line bg-cream px-4 py-3 text-[14px] text-navy-soft">
-            Add a child in{" "}
-            <a href="/account" className="font-semibold text-teal">
-              Settings
-            </a>{" "}
-            to book lessons.
-          </p>
-        ) : (
-          <div className="space-y-2">
-            {kids.map((k) => (
-              <div
-                key={k.id}
-                className="flex items-center justify-between gap-3 rounded-xl border border-line bg-white px-4 py-3"
-              >
-                <div>
-                  <span className="font-semibold text-navy">{k.name}</span>
-                  {k.tier && (
-                    <span className="ml-2 text-[13px] text-muted">
-                      {tierLabel[k.tier]} · {bal[k.tier]} left
-                    </span>
-                  )}
-                </div>
-                <BookLessonButton
-                  tier={k.tier}
-                  childId={k.id}
-                  parentId={user?.id ?? ""}
-                  balance={k.tier ? bal[k.tier] : 0}
-                  name={profile?.full_name ?? ""}
-                  email={user?.email ?? ""}
-                />
-              </div>
-            ))}
-          </div>
-        )}
+        <InlineBooking
+          childrenList={kids}
+          balances={bal}
+          parentId={user?.id ?? ""}
+          name={profile?.full_name ?? ""}
+          email={user?.email ?? ""}
+        />
       </section>
 
       {/* History */}
