@@ -53,5 +53,56 @@ export async function POST(request: Request) {
     }
   }
 
+  // A refund removes the lesson credits that payment bought, so money and
+  // balance stay in sync. Deducts in proportion to the amount refunded.
+  if (event.type === "charge.refunded") {
+    const charge = event.data.object as Stripe.Charge;
+    const amount = charge.amount ?? 0;
+    const refunded = charge.amount_refunded ?? 0;
+    const paymentIntent =
+      typeof charge.payment_intent === "string"
+        ? charge.payment_intent
+        : (charge.payment_intent?.id ?? null);
+
+    if (paymentIntent && amount > 0 && refunded > 0) {
+      // Recover our metadata from the checkout session behind this payment.
+      const sessions = await stripe.checkout.sessions.list({
+        payment_intent: paymentIntent,
+        limit: 1,
+      });
+      const md = sessions.data[0]?.metadata ?? {};
+      const parentId = md.parent_id;
+      const tier = md.tier;
+      const purchased = Number(md.tokens ?? 0);
+
+      const deduct = Math.min(
+        purchased,
+        Math.round(purchased * (refunded / amount)),
+      );
+
+      if (parentId && tier && deduct > 0) {
+        const admin = createAdminClient();
+        // Idempotent per charge: stripe_session_id holds the charge id here
+        // (distinct from checkout-session ids, so no collision).
+        const { error } = await admin.from("token_transactions").insert({
+          parent_id: parentId,
+          tier,
+          type: "adjustment",
+          amount: -deduct,
+          stripe_session_id: charge.id,
+          pack_label: "Stripe refund",
+          note: `Refund of £${(refunded / 100).toFixed(2)} — removed ${deduct} lesson(s)`,
+        });
+        if (error && !error.message.includes("duplicate")) {
+          console.error(
+            "[stripe webhook] refund adjustment failed:",
+            error.message,
+          );
+          return NextResponse.json({ error: "refund adjust failed" }, { status: 500 });
+        }
+      }
+    }
+  }
+
   return NextResponse.json({ received: true });
 }
