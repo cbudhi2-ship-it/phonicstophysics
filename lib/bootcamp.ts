@@ -43,7 +43,7 @@ export const bootcampWeeks = [
 export const bootcampFaq = [
   { q: "What level is it for?", a: "Children entering Year 6, sitting the September state-grammar 11+." },
   { q: "What if we're on holiday for a few days?", a: "Every session is recorded — your child can catch up any time." },
-  { q: "Which exam board?", a: "It covers the core GL/CEM-style skills. Tell me your target schools and I'll flag anything specific." },
+  { q: "Which exam board does it cover?", a: "The course builds the core GL- and CEM-style skills that state grammar 11+ exams draw on. If your child's target schools use a particular format, just let me know when you book and I'll flag anything worth extra focus." },
   { q: "How big is the group?", a: "Capped to stay small and interactive, so every child gets attention." },
   { q: "Refunds?", a: "Full refund up to 7 days before the start date." },
   { q: "Is it safe / online?", a: "DBS-checked tutor, private join link with a waiting room, cameras optional, and parents cc'd on all comms." },
