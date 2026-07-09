@@ -26,6 +26,7 @@ export function Header() {
             <Link
               key={item.href}
               href={item.href}
+              aria-current={isActive(item.href) ? "page" : undefined}
               className={`rounded-pill px-3.5 py-2 text-[15px] font-semibold transition-shadow hover:bg-white hover:shadow-soft ${
                 isActive(item.href) ? "bg-white shadow-soft" : ""
               }`}

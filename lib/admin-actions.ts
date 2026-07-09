@@ -329,6 +329,20 @@ export async function sendAdminMessage(formData: FormData) {
   revalidatePath(`/admin/clients/${parentId}`);
 }
 
+export async function deleteBootcampEnrolment(
+  id: string,
+): Promise<{ ok: boolean }> {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("bootcamp_enrolments")
+    .delete()
+    .eq("id", id);
+  if (error) return { ok: false };
+  revalidatePath("/admin/bootcamp");
+  return { ok: true };
+}
+
 export async function setEnquiryStatus(formData: FormData) {
   await requireAdmin();
   const id = String(formData.get("id") ?? "");

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { RemoveEnrolment } from "./RemoveEnrolment";
 
 export const dynamic = "force-dynamic";
 
@@ -52,6 +53,7 @@ export default async function AdminBootcampPage() {
                 <th className="px-4 py-3 font-bold">Email</th>
                 <th className="px-4 py-3 font-bold">Paid</th>
                 <th className="px-4 py-3 font-bold">Booked</th>
+                <th className="px-4 py-3 font-bold">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -81,6 +83,9 @@ export default async function AdminBootcampPage() {
                       day: "numeric",
                       month: "short",
                     })}
+                  </td>
+                  <td className="px-4 py-3">
+                    <RemoveEnrolment id={e.id} label={e.name ?? e.email} />
                   </td>
                 </tr>
               ))}

@@ -15,6 +15,43 @@
   h3 {
     @apply font-serif;
   }
+
+  /* Visible keyboard focus for all interactive elements. */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid var(--focus, #1f2d4a);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Respect users who prefer reduced motion. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Screen-reader-only, made visible when focused (for the skip link). */
+  .sr-only-focusable {
+    @apply sr-only;
+  }
+  .sr-only-focusable:focus {
+    @apply not-sr-only fixed left-4 top-4 z-[100] rounded-lg bg-navy px-4 py-2 text-[14px] font-bold text-white;
+  }
 }
 
 @layer components {
