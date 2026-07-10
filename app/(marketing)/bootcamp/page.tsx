@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TrackPurchase } from "@/components/TrackPurchase";
 import { bookBootcamp } from "@/lib/bootcamp-actions";
 import {
   bootcamp,
@@ -45,7 +46,12 @@ function BookButton({ label }: { label: string }) {
 export default async function BootcampPage({
   searchParams,
 }: {
-  searchParams: Promise<{ booked?: string; canceled?: string; error?: string }>;
+  searchParams: Promise<{
+    booked?: string;
+    canceled?: string;
+    error?: string;
+    sid?: string;
+  }>;
 }) {
   const sp = await searchParams;
   const early = isEarlyBird();
@@ -53,6 +59,9 @@ export default async function BootcampPage({
 
   return (
     <>
+      {sp.booked && (
+        <TrackPurchase value={price} currency="GBP" eventId={sp.sid} />
+      )}
       {/* Status banners */}
       {(sp.booked || sp.error || sp.canceled) && (
         <div className="wrap pt-8">

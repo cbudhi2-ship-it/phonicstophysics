@@ -35,7 +35,7 @@ export async function bookBootcamp() {
       },
     ],
     metadata: { type: "bootcamp", early_bird: String(isEarlyBird()) },
-    success_url: `${base}/bootcamp?booked=1`,
+    success_url: `${base}/bootcamp?booked=1&sid={CHECKOUT_SESSION_ID}`,
     cancel_url: `${base}/bootcamp?canceled=1`,
   });
 

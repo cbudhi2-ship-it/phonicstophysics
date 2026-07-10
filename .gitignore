@@ -29,3 +29,8 @@ next-env.d.ts
 
 # vercel
 .vercel
+
+# local env backups / scratch
+*.bak
+*.tmp
+.env.local.*
