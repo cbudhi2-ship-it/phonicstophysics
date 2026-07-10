@@ -259,6 +259,23 @@ export default async function BootcampPage({
               </div>
             ))}
           </div>
+
+          {/* Booking terms */}
+          <div className="mt-6 rounded-xl border border-line bg-cream px-4 py-3 text-[13px] text-navy-soft">
+            <strong>Booking terms:</strong> the course is paid up front via
+            Stripe. You can cancel for a full refund up to 7 days before the
+            start date; after that fees are non-refundable, but every session is
+            recorded so your child can catch up. Places are capped and joining
+            details are emailed before we start. Full{" "}
+            <Link href="/terms" className="font-semibold text-teal">
+              terms
+            </Link>{" "}
+            and{" "}
+            <Link href="/safeguarding" className="font-semibold text-teal">
+              safeguarding
+            </Link>{" "}
+            apply.
+          </div>
         </div>
       </section>
 
