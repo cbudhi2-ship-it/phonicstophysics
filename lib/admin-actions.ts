@@ -297,6 +297,38 @@ export async function deleteHomework(formData: FormData) {
   revalidatePath(`/admin/clients`);
 }
 
+export async function addResource(formData: FormData) {
+  await requireAdmin();
+  const childId = String(formData.get("child_id") ?? "");
+  const label = String(formData.get("label") ?? "").trim().slice(0, 100);
+  const url = String(formData.get("url") ?? "").trim().slice(0, 500);
+  const username = String(formData.get("username") ?? "").trim().slice(0, 200);
+  const password = String(formData.get("password") ?? "").trim().slice(0, 200);
+  const note = String(formData.get("note") ?? "").trim().slice(0, 300);
+  if (!childId || !label) return;
+  const admin = createAdminClient();
+  await admin.from("resources").insert({
+    child_id: childId,
+    label,
+    url: url || null,
+    username: username || null,
+    password: password || null,
+    note: note || null,
+  });
+  revalidatePath("/admin/clients");
+  revalidatePath("/admin/learning");
+}
+
+export async function deleteResource(formData: FormData) {
+  await requireAdmin();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+  const admin = createAdminClient();
+  await admin.from("resources").delete().eq("id", id);
+  revalidatePath("/admin/clients");
+  revalidatePath("/admin/learning");
+}
+
 /** Chris replies to a parent; notifies them by email. */
 export async function sendAdminMessage(formData: FormData) {
   await requireAdmin();

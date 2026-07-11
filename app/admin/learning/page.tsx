@@ -6,6 +6,7 @@ import {
   ChildLearning,
   type TargetRow,
   type HomeworkRow,
+  type ResourceRow,
 } from "@/components/admin/ChildLearning";
 
 export const dynamic = "force-dynamic";
@@ -14,16 +15,22 @@ export default async function AdminLearningPage() {
   await requireAdmin();
   const admin = createAdminClient();
 
-  const [{ data: children }, { data: profiles }, { data: targets }, { data: homework }] =
-    await Promise.all([
-      admin
-        .from("children")
-        .select("id, parent_id, name, year_group, tier")
-        .order("created_at"),
-      admin.from("profiles").select("id, full_name").neq("role", "admin"),
-      admin.from("targets").select("id, child_id, title, detail, status"),
-      admin.from("homework").select("id, child_id, title, due_date, done"),
-    ]);
+  const [
+    { data: children },
+    { data: profiles },
+    { data: targets },
+    { data: homework },
+    { data: resources },
+  ] = await Promise.all([
+    admin
+      .from("children")
+      .select("id, parent_id, name, year_group, tier")
+      .order("created_at"),
+    admin.from("profiles").select("id, full_name").neq("role", "admin"),
+    admin.from("targets").select("id, child_id, title, detail, status"),
+    admin.from("homework").select("id, child_id, title, due_date, done"),
+    admin.from("resources").select("id, child_id, label, url, username, password"),
+  ]);
 
   const kids = (children ?? []) as {
     id: string;
@@ -42,6 +49,10 @@ export default async function AdminLearningPage() {
   const hwByChild = new Map<string, HomeworkRow[]>();
   for (const h of (homework ?? []) as (HomeworkRow & { child_id: string })[]) {
     (hwByChild.get(h.child_id) ?? hwByChild.set(h.child_id, []).get(h.child_id)!).push(h);
+  }
+  const resByChild = new Map<string, ResourceRow[]>();
+  for (const r of (resources ?? []) as (ResourceRow & { child_id: string })[]) {
+    (resByChild.get(r.child_id) ?? resByChild.set(r.child_id, []).get(r.child_id)!).push(r);
   }
 
   return (
@@ -78,6 +89,7 @@ export default async function AdminLearningPage() {
                 childId={child.id}
                 targets={targetsByChild.get(child.id) ?? []}
                 homework={hwByChild.get(child.id) ?? []}
+                resources={resByChild.get(child.id) ?? []}
               />
             </section>
           ))}

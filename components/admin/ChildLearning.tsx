@@ -4,6 +4,8 @@ import {
   deleteTarget,
   addHomework,
   deleteHomework,
+  addResource,
+  deleteResource,
 } from "@/lib/admin-actions";
 
 const field =
@@ -21,6 +23,13 @@ export type HomeworkRow = {
   due_date: string | null;
   done: boolean;
 };
+export type ResourceRow = {
+  id: string;
+  label: string;
+  url: string | null;
+  username: string | null;
+  password: string | null;
+};
 
 /** Per-child targets + homework editor. Used on the client detail and the
  *  Targets & Homework pages. Uses server-action forms directly. */
@@ -28,10 +37,12 @@ export function ChildLearning({
   childId,
   targets,
   homework,
+  resources = [],
 }: {
   childId: string;
   targets: TargetRow[];
   homework: HomeworkRow[];
+  resources?: ResourceRow[];
 }) {
   return (
     <div>
@@ -132,6 +143,50 @@ export function ChildLearning({
         <div className="sm:col-span-2">
           <button className="rounded-lg bg-coral px-3 py-2 text-[13px] font-bold text-white">
             Assign homework
+          </button>
+        </div>
+      </form>
+
+      {/* Logins & resources */}
+      <h3 className="mb-2 mt-6 text-[15px] font-bold text-navy-soft">
+        Logins &amp; resources
+      </h3>
+      <div className="space-y-2">
+        {resources.map((r) => (
+          <div
+            key={r.id}
+            className="flex items-center justify-between gap-3 rounded-lg border border-line px-3 py-2"
+          >
+            <div className="text-[14px]">
+              <span className="font-semibold text-navy">{r.label}</span>
+              {r.username && (
+                <span className="ml-2 text-muted">{r.username}</span>
+              )}
+              {r.password && (
+                <span className="ml-2 font-mono text-muted">{r.password}</span>
+              )}
+            </div>
+            <form action={deleteResource} className="shrink-0">
+              <input type="hidden" name="id" value={r.id} />
+              <button className="text-[12px] font-semibold text-muted hover:text-coral-dark">
+                Delete
+              </button>
+            </form>
+          </div>
+        ))}
+        {resources.length === 0 && (
+          <p className="text-[13px] text-muted">No logins added yet.</p>
+        )}
+      </div>
+      <form action={addResource} className="mt-2 grid gap-2 sm:grid-cols-2">
+        <input type="hidden" name="child_id" value={childId} />
+        <input name="label" required placeholder="Platform (e.g. Mathletics)" className={field} />
+        <input name="url" placeholder="login link (optional)" className={field} />
+        <input name="username" placeholder="username" className={field} />
+        <input name="password" placeholder="password" className={field} />
+        <div className="sm:col-span-2">
+          <button className="rounded-lg bg-coral px-3 py-2 text-[13px] font-bold text-white">
+            Add login
           </button>
         </div>
       </form>

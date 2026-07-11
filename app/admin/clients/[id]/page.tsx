@@ -44,28 +44,39 @@ export default async function AdminClientDetail({
   }[];
   const childIds = kids.map((k) => k.id);
 
-  const [{ data: targets }, { data: homework }, { data: messages }] =
-    await Promise.all([
-      childIds.length
-        ? admin
-            .from("targets")
-            .select("id, child_id, title, detail, status")
-            .in("child_id", childIds)
-            .order("created_at")
-        : Promise.resolve({ data: [] }),
-      childIds.length
-        ? admin
-            .from("homework")
-            .select("id, child_id, title, detail, due_date, done")
-            .in("child_id", childIds)
-            .order("created_at")
-        : Promise.resolve({ data: [] }),
-      admin
-        .from("messages")
-        .select("id, sender, body, created_at")
-        .eq("parent_id", id)
-        .order("created_at"),
-    ]);
+  const [
+    { data: targets },
+    { data: homework },
+    { data: resources },
+    { data: messages },
+  ] = await Promise.all([
+    childIds.length
+      ? admin
+          .from("targets")
+          .select("id, child_id, title, detail, status")
+          .in("child_id", childIds)
+          .order("created_at")
+      : Promise.resolve({ data: [] }),
+    childIds.length
+      ? admin
+          .from("homework")
+          .select("id, child_id, title, detail, due_date, done")
+          .in("child_id", childIds)
+          .order("created_at")
+      : Promise.resolve({ data: [] }),
+    childIds.length
+      ? admin
+          .from("resources")
+          .select("id, child_id, label, url, username, password")
+          .in("child_id", childIds)
+          .order("created_at")
+      : Promise.resolve({ data: [] }),
+    admin
+      .from("messages")
+      .select("id, sender, body, created_at")
+      .eq("parent_id", id)
+      .order("created_at"),
+  ]);
 
   const allTargets = (targets ?? []) as {
     id: string;
@@ -81,6 +92,14 @@ export default async function AdminClientDetail({
     detail: string | null;
     due_date: string | null;
     done: boolean;
+  }[];
+  const allResources = (resources ?? []) as {
+    id: string;
+    child_id: string;
+    label: string;
+    url: string | null;
+    username: string | null;
+    password: string | null;
   }[];
   const thread = (messages ?? []) as {
     id: string;
@@ -145,6 +164,7 @@ export default async function AdminClientDetail({
             childId={child.id}
             targets={allTargets.filter((t) => t.child_id === child.id)}
             homework={allHomework.filter((h) => h.child_id === child.id)}
+            resources={allResources.filter((r) => r.child_id === child.id)}
           />
         </section>
       ))}

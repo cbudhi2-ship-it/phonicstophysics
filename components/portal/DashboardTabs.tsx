@@ -7,6 +7,7 @@ const tabs = [
   { href: "/dashboard", label: "Targets" },
   { href: "/dashboard/calendar", label: "Calendar" },
   { href: "/dashboard/homework", label: "Homework" },
+  { href: "/dashboard/logins", label: "Logins" },
   { href: "/dashboard/messages", label: "Messages" },
   { href: "/dashboard/tokens", label: "Lessons & Booking" },
 ];
