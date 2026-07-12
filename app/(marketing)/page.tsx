@@ -132,30 +132,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* TESTIMONIALS PLACEHOLDER */}
-      <section className="py-16">
-        <div className="wrap">
-          <div className="mb-10 text-center">
-            <span className="eyebrow">Kind words</span>
-            <h2 className="mt-1.5 text-[36px]">What parents say</h2>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <figure key={i} className="card">
-                <div className="mb-3 text-gold">★★★★★</div>
-                <blockquote className="text-[15px] italic text-navy-soft">
-                  “A short, glowing testimonial from a parent will sit here once
-                  reviews come in.”
-                </blockquote>
-                <figcaption className="mt-4 text-[13px] font-semibold text-muted">
-                  Parent of a Year — learner
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="pb-8">
         <div className="wrap">
