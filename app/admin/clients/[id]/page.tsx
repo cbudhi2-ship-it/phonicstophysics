@@ -3,7 +3,8 @@ import { requireAdmin } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getBalances } from "@/lib/tokens";
 import { tierLabel, type Tier } from "@/lib/tiers";
-import { sendAdminMessage } from "@/lib/admin-actions";
+import { sendAdminMessage, addChildForClient } from "@/lib/admin-actions";
+import { yearGroups } from "@/lib/enquiry";
 import { ChildLearning } from "@/components/admin/ChildLearning";
 
 export const dynamic = "force-dynamic";
@@ -144,11 +145,37 @@ export default async function AdminClientDetail({
         </p>
       </div>
 
-      {kids.length === 0 && (
-        <p className="rounded-xl border border-line bg-cream px-4 py-3 text-[14px] text-muted">
-          This client hasn&apos;t added any children yet.
+      {/* Add a child (parents can also add their own in Settings) */}
+      <section className="card">
+        <h2 className="text-[18px]">Add a child</h2>
+        <p className="mb-3 mt-1 text-[13px] text-muted">
+          Add a child here to set their targets, homework and logins. Parents
+          can also add their own in Settings.
         </p>
-      )}
+        <form
+          action={addChildForClient}
+          className="flex flex-wrap items-end gap-2"
+        >
+          <input type="hidden" name="parent_id" value={id} />
+          <input
+            name="name"
+            required
+            placeholder="Child's name"
+            className={`${field} max-w-[220px]`}
+          />
+          <select name="year_group" required className={`${field} max-w-[240px]`}>
+            <option value="">Year group…</option>
+            {yearGroups.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+          <button className="rounded-lg bg-coral px-3 py-2 text-[13px] font-bold text-white">
+            Add child
+          </button>
+        </form>
+      </section>
 
       {kids.map((child) => (
         <section key={child.id} className="card">

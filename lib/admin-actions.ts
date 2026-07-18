@@ -297,6 +297,26 @@ export async function deleteHomework(formData: FormData) {
   revalidatePath(`/admin/clients`);
 }
 
+/** Admin adds a child directly to a client (parents can also add their own). */
+export async function addChildForClient(formData: FormData) {
+  await requireAdmin();
+  const parentId = String(formData.get("parent_id") ?? "");
+  const name = String(formData.get("name") ?? "").trim().slice(0, 80);
+  const yearGroup = String(formData.get("year_group") ?? "").trim();
+  if (!parentId || !name) return;
+
+  const { tierForYearGroup } = await import("@/lib/tiers");
+  const admin = createAdminClient();
+  await admin.from("children").insert({
+    parent_id: parentId,
+    name,
+    year_group: yearGroup || null,
+    tier: yearGroup ? tierForYearGroup(yearGroup) : null,
+  });
+  revalidatePath(`/admin/clients/${parentId}`);
+  revalidatePath("/admin/learning");
+}
+
 export async function addResource(formData: FormData) {
   await requireAdmin();
   const childId = String(formData.get("child_id") ?? "");
