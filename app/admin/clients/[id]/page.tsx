@@ -177,24 +177,35 @@ export default async function AdminClientDetail({
         </form>
       </section>
 
-      {kids.map((child) => (
-        <section key={child.id} className="card">
-          <h2 className="text-[20px]">
-            {child.name}
-            <span className="ml-2 text-[13px] font-normal text-muted">
-              {child.year_group ?? ""}
-              {child.tier ? ` · ${tierLabel[child.tier]}` : ""}
-            </span>
-          </h2>
-
-          <ChildLearning
-            childId={child.id}
-            targets={allTargets.filter((t) => t.child_id === child.id)}
-            homework={allHomework.filter((h) => h.child_id === child.id)}
-            resources={allResources.filter((r) => r.child_id === child.id)}
-          />
-        </section>
-      ))}
+      {kids.map((child) => {
+        const tCount = allTargets.filter((t) => t.child_id === child.id).length;
+        const hCount = allHomework.filter((h) => h.child_id === child.id).length;
+        return (
+          <details key={child.id} className="group card">
+            <summary className="flex cursor-pointer items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+              <span>
+                <span className="font-serif text-[20px] text-navy">
+                  {child.name}
+                </span>
+                <span className="ml-2 text-[13px] font-normal text-muted">
+                  {child.year_group ?? ""}
+                  {child.tier ? ` · ${tierLabel[child.tier]}` : ""} · {tCount}{" "}
+                  target{tCount === 1 ? "" : "s"} · {hCount} h/w
+                </span>
+              </span>
+              <span className="shrink-0 text-[18px] text-muted transition-transform group-open:rotate-90">
+                ›
+              </span>
+            </summary>
+            <ChildLearning
+              childId={child.id}
+              targets={allTargets.filter((t) => t.child_id === child.id)}
+              homework={allHomework.filter((h) => h.child_id === child.id)}
+              resources={allResources.filter((r) => r.child_id === child.id)}
+            />
+          </details>
+        );
+      })}
 
       {/* Messages */}
       <section className="card">
