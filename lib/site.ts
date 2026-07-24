@@ -78,3 +78,12 @@ export const trustBadges = [
   "Y1–A-level",
   "Free intro call",
 ] as const;
+
+export const testimonials = [
+  {
+    quote:
+      "I’d definitely recommend Chris to anyone who needs help with maths. He helped me remember the maths skills I needed for my university interviews and explained everything in a way that actually made sense. He was really patient and never made me feel silly for asking questions. I felt so much more confident, and I went into my interviews feeling much better prepared. Thank you so much for all your help — I really appreciate it!",
+    name: "Zara Bishop",
+    role: "University interview preparation",
+  },
+] as const;

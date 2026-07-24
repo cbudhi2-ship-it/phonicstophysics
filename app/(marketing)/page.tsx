@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { JourneyMark } from "@/components/Logo";
-import { subjects, trustBadges } from "@/lib/site";
+import { subjects, trustBadges, testimonials } from "@/lib/site";
 
 export default function HomePage() {
   return (
@@ -128,6 +128,36 @@ export default function HomePage() {
             <Link href="/about" className="btn btn-teal mt-2">
               Read more about me
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="py-16">
+        <div className="wrap">
+          <div className="mb-10 text-center">
+            <span className="eyebrow">Kind words</span>
+            <h2 className="mt-1.5 text-[36px]">What families say</h2>
+          </div>
+          <div
+            className={`grid gap-6 ${
+              testimonials.length > 1 ? "md:grid-cols-2" : "mx-auto max-w-[720px]"
+            }`}
+          >
+            {testimonials.map((t) => (
+              <figure key={t.name} className="card flex flex-col">
+                <div className="mb-3 text-[28px] leading-none text-coral">“</div>
+                <blockquote className="text-[16px] text-navy-soft">
+                  {t.quote}
+                </blockquote>
+                <figcaption className="mt-4 border-t border-line pt-4">
+                  <span className="block font-serif text-[17px] text-navy">
+                    {t.name}
+                  </span>
+                  <span className="text-[13px] text-muted">{t.role}</span>
+                </figcaption>
+              </figure>
+            ))}
           </div>
         </div>
       </section>
