@@ -5,11 +5,12 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Meet Chris — a warm, structured 1-to-1 tutor helping learners from Year 1 phonics to A-level Maths and Science.",
+    "Meet Chris — a patient, SEND-trained 1-to-1 tutor helping children who find school a struggle, from learning to read in Year 1 through to GCSE and A-level.",
 };
 
 const creds = [
-  "🎓 Qualified teacher · 10 years",
+  "🎓 Qualified teacher",
+  "🧩 SEND-trained (The National College)",
   "📖 Reading & English",
   "➗ Maths (Y1 – A-level)",
   "🔬 GCSE Science",
@@ -36,19 +37,29 @@ export default function AboutPage() {
             <span className="eyebrow">About me</span>
             <h1 className="mb-3.5 mt-1 text-[34px]">Hi, I&apos;m Chris 👋</h1>
             <p className="mb-3.5 text-[16px] text-navy-soft">
-              I&apos;m a qualified teacher with 10 years&apos; experience across
-              Cambridge primary schools, where I taught a broad range of subjects
-              and got to know how children really learn. For the last 4 years
-              I&apos;ve also tutored one-to-one — working with students on reading
-              and English skills, secondary maths, GCSE sciences, and applied
-              maths at A-level.
+              I&apos;ve spent years tutoring children of every age and stage, and
+              the work I care about most is helping the children who find learning
+              hard going — the ones who&apos;ve fallen a bit behind, lost their
+              confidence, or need things explained in a way that finally makes
+              sense.
             </p>
             <p className="mb-3.5 text-[16px] text-navy-soft">
-              I believe every child can thrive with the right support, patience
-              and a bit of fun. My approach is warm, structured and tailored to
-              each learner: we find where the gaps are, set clear goals, and
-              celebrate the wins along the way. Parents get honest updates so you
-              always know how things are going.
+              I believe no child is &ldquo;just bad&rdquo; at a subject. Usually
+              they&apos;ve missed a step somewhere and never had the time, one to
+              one, to fill it in — and in a busy classroom of thirty, that&apos;s
+              so easy to happen. My job is to find that step, go back, and build it
+              properly, without pressure and at your child&apos;s pace.
+            </p>
+            <p className="mb-3.5 text-[16px] text-navy-soft">
+              I&apos;ve completed specialist SEND training with The National
+              College, and I support children with additional needs in mainstream
+              school alongside the help they get in class. I&apos;m DBS checked,
+              and I work online or in person across Cambridge.
+            </p>
+            <p className="mb-3.5 text-[16px] text-navy-soft">
+              Most of all, I keep it calm and encouraging — because a child who
+              feels safe and capable learns far faster than one who feels anxious.
+              Small steps, every week. That&apos;s how the big results happen.
             </p>
             <div className="mt-2 flex flex-wrap gap-2.5">
               {creds.map((c) => (
@@ -68,18 +79,18 @@ export default function AboutPage() {
           {[
             {
               n: "1",
-              t: "Find the gaps",
-              d: "A relaxed first session to see where your child is confident and where the tricky bits are.",
+              t: "Understand your child",
+              d: "A relaxed first session to see where they are, what they find hard, and what makes them switch off.",
             },
             {
               n: "2",
-              t: "Set clear goals",
-              d: "Small, achievable targets so every lesson has a purpose and progress is easy to see.",
+              t: "Go at their pace",
+              d: "Small, achievable steps and no pressure — we build confidence with early wins, then keep them coming.",
             },
             {
               n: "3",
-              t: "Celebrate the wins",
-              d: "We build confidence by noticing progress — and I keep parents in the loop with honest updates.",
+              t: "Keep you in the loop",
+              d: "Honest, jargon-free updates — and I work alongside what your child is already doing in school.",
             },
           ].map((step) => (
             <div key={step.n} className="card">
@@ -94,7 +105,7 @@ export default function AboutPage() {
 
         <div className="mt-14 text-center">
           <Link href="/contact" className="btn btn-primary">
-            Book a free intro call
+            Book a free intro chat
           </Link>
         </div>
       </div>

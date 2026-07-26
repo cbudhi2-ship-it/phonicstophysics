@@ -2,7 +2,7 @@ export const site = {
   name: "Phonics to Physics",
   tagline: "Small steps, big results.",
   description:
-    "Friendly 1-to-1 tutoring from Year 1 phonics all the way to A-level Maths and Science. Building confidence one lesson at a time.",
+    "Patient, one-to-one tutoring for children who are finding school a struggle — including SEND learners in mainstream school. From learning to read in Year 1 through to GCSE and A-level.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://phonicstophysics.com",
   email: "hello@phonicstophysics.com",
   phone: "07584 030444",
@@ -73,10 +73,48 @@ export const subjects = [
 ] as const;
 
 export const trustBadges = [
+  "SEND-trained (The National College)",
   "DBS checked",
-  "Online or in-person (Cambridge)",
-  "Y1–A-level",
-  "Free intro call",
+  "Online or in person",
+  "Year 1–A-level",
+] as const;
+
+/** "Who I help" — the children this practice is built for. */
+export const whoIHelp = [
+  "Have fallen behind and lost confidence",
+  "Find a subject a real struggle, however hard they try",
+  "Need learning broken down and explained differently",
+  "Are SEND learners in mainstream school who need extra, individual support — including dyslexia, ADHD, working-memory or processing difficulties, or anxiety around a subject",
+  "Simply need a calmer, one-to-one pace than a busy classroom allows",
+] as const;
+
+/** "How I work" — the approach, in order. */
+export const howIWork = [
+  {
+    title: "I start by understanding your child",
+    detail:
+      "Where they are, what they find hard, and what makes them switch off or shut down.",
+  },
+  {
+    title: "We go at their pace",
+    detail: "No pressure, no rushing to keep up with anyone else.",
+  },
+  {
+    title: "I build confidence first",
+    detail: "Small early wins matter more than anything.",
+  },
+  {
+    title: "I explain it differently until it clicks",
+    detail: "There's always another way in.",
+  },
+  {
+    title: "I keep you in the loop",
+    detail: "Honest, jargon-free updates so you always know how things are going.",
+  },
+  {
+    title: "I work alongside school",
+    detail: "Supporting what your child is already doing in class.",
+  },
 ] as const;
 
 export const testimonials = [
