@@ -120,6 +120,12 @@ export const howIWork = [
 export const testimonials = [
   {
     quote:
+      "Chris has been tutoring my daughter for over three years now and you could not wish for a more conscientious person. He has guided my daughter through every exam, mock and finally her GCSE exams this year. Chris will research what topic is being covered and obtain links to websites that can assist. He will work through past papers and his patience is outstanding. He would give my daughter all the thinking time she required and found ways to explain things to her. Chris was not just my daughter’s tutor but became a friend to us all. You could not ask for a more professional tutor.",
+    name: "Julie Bishop",
+    role: "Parent · 3 years of tutoring to GCSE",
+  },
+  {
+    quote:
       "I’d definitely recommend Chris to anyone who needs help with maths. He helped me remember the maths skills I needed for my university interviews and explained everything in a way that actually made sense. He was really patient and never made me feel silly for asking questions. I felt so much more confident, and I went into my interviews feeling much better prepared. Thank you so much for all your help — I really appreciate it!",
     name: "Zara Bishop",
     role: "University interview preparation",
