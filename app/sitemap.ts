@@ -2,11 +2,11 @@ import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  // Note: /bootcamp is intentionally omitted — it's an unlisted page (noindex).
   const routes = [
     "",
     "/about",
     "/subjects",
-    "/bootcamp",
     "/pricing",
     "/contact",
     "/privacy",
@@ -17,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return routes.map((path) => ({
     url: `${site.url}${path}`,
     lastModified: now,
-    changeFrequency: path === "/bootcamp" ? "weekly" : "monthly",
-    priority: path === "" ? 1 : path === "/bootcamp" ? 0.9 : 0.7,
+    changeFrequency: "monthly",
+    priority: path === "" ? 1 : 0.7,
   }));
 }

@@ -18,6 +18,8 @@ export const metadata: Metadata = {
   title: "11+ Summer Bootcamp",
   description:
     "Complete 11+ Summer Bootcamp — daily live online lessons, 3–28 August 2026. English, Maths, Verbal & Non-Verbal Reasoning, building to a full mock. Early-bird £199.",
+  // Unlisted: reachable by direct link, but never indexed by search engines.
+  robots: { index: false, follow: false },
   openGraph: {
     title: "Complete 11+ Summer Bootcamp — Phonics to Physics",
     description:
