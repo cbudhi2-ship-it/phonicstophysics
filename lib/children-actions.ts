@@ -47,6 +47,8 @@ export async function addChild(
   }
 
   revalidatePath("/account");
+  revalidatePath("/admin/learning");
+  revalidatePath("/admin/clients");
   return { ok: true };
 }
 
@@ -58,4 +60,6 @@ export async function deleteChild(formData: FormData) {
   // RLS ensures a parent can only delete their own child.
   await supabase.from("children").delete().eq("id", id);
   revalidatePath("/account");
+  revalidatePath("/admin/learning");
+  revalidatePath("/admin/clients");
 }
